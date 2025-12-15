@@ -1,0 +1,61 @@
+﻿@model ttm3._0.Models.tbSoDoMangMay
+
+@{
+    ViewBag.Title = "Xóa máy tính";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h3>@ViewBag.Title</h3>
+        <h3>Bạn có chắc chắn muốn xóa?</h3>
+    </div>
+    <div class="card-body">
+        <dl class="dl-horizontal">
+            <dt>
+                Thuộc sơ đồ mạng
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.tbSoDoMang.Ten)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MaMay)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MaMay)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TenMay)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenMay)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GhiChu)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.GhiChu)
+            </dd>
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-primary" /> |
+                @Html.ActionLink("Quay lại", "Index")
+            </div>
+        }
+    </div>
+</div>

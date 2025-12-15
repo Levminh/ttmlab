@@ -1,0 +1,100 @@
+﻿@model IEnumerable<ttm3._0.Models.clKetQua>
+
+@{
+    ViewBag.Title = "Kết quả của học viên";
+}
+
+<link href="~/Content/datatables.min.css" rel="stylesheet" />
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="display table table-bordered" id="table_tbHocVien">
+                <thead>
+                    <th style="width:30px;">
+                        TT
+                    </th>
+                    <th>
+                        Sinh viên
+                    </th>
+                    @foreach (var item in ViewBag.LstKB)
+                    {
+                    <th>
+                        @item.tbKichBan.MaKichBan
+                    </th>
+                    <th>
+                        Submit
+                    </th>
+                    }
+                    <th>
+                        Tổng điểm
+                    </th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.UserName)
+                            </td>
+                            @foreach (var kq in item.lsKQ)
+                            {
+                            <td class="editable" id="@kq.IdKetQua">
+                                @kq.Diem                               
+                            </td>
+                            <td>
+                                @if(kq.KieuDanhGia==1)
+                                {
+                                    @Html.Raw(kq.DapAn)
+                                }else
+                                {
+                                    <a href="@kq.UrlFileDapAn">File đáp án</a>
+                                }
+                            </td>
+                            }
+                            <td>
+                                @item.TongDiem
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/datatables.min.js"></script>
+    <script src="~/Scripts/jquery.jeditable.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            var t = $('#table_tbHocVien').DataTable({
+                "pageLength": 50,
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [[1, 'asc']]
+            });
+
+            t.on('order.dt search.dt', function () {
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+
+            $(".editable").editable("/tbLopHocs/UpdateKetQua", {
+                type: "number", width: 90, maxlength: 20,
+                data: function (string) { return $.trim(string) }
+            });
+        })
+    </script>
+}

@@ -1,0 +1,39 @@
+﻿@model ttm3._0.Models.FileModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card shadow  mb-4">
+    <div class="card-header">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("UploadFiles", "tbKetQuas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.files, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.files, "", new { @type = "file" })
+                        @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Upload" class="btn btn-success" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10 text-success">
+                        @Html.Raw(@ViewBag.UploadStatus)
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

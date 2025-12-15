@@ -1,0 +1,78 @@
+﻿@model IEnumerable<ttm3._0.Models.tbGiamSat>
+
+@{
+    ViewBag.Title = "Danh sách link giám sát";
+}
+<link href="~/Content/datatables.min.css" rel="stylesheet" />
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h3>@ViewBag.Title</h3>
+        <p>
+            @Html.ActionLink("Thêm mới", "Create", new {id=ViewBag.id }, new { @class = "btn btn-success" })
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="display table table-bordered" id="table_tbGiamSat" style="width:100%">
+                <thead>
+                <th>
+                    TT
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ten)
+                </th>
+                <th style="width:600px;">
+                    @Html.DisplayNameFor(model => model.Link)
+                </th>
+                <th style="min-width:60px"></th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ten)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Link2)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/datatables.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            var t = $('#table_tbGiamSat').DataTable({
+                "pageLength": 50,
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [[1, 'asc']]
+            });
+
+            t.on('order.dt search.dt', function () {
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        })
+    </script>
+}

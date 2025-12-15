@@ -1,0 +1,53 @@
+﻿@model ttm3._0.Models.AspNetUser
+
+@{
+    ViewBag.Title = "Thông tin chi tiết tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string controlName = "AspNetUsers";
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="card-body">
+        <div>
+            <dl class="dl-horizontal">
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.FullName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.LockoutEnabled)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.LockoutEnabled)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Quay lại danh sách tài khoản", "Index", @controlName, null, new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>

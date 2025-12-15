@@ -1,0 +1,55 @@
+﻿@model ttm3._0.Models.tbKichBan
+
+@{
+    ViewBag.Title = "Xóa kịch bản";
+}
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h3>@ViewBag.Title</h3>
+        <h3>Bạn có chắc chắn muốn xóa?</h3>
+    </div>
+    <div class="card-body">
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.MaKichBan)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.MaKichBan)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.TenKichBan)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.TenKichBan)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.NoiDung)
+                </dt>
+
+                <dd>
+                    @Html.Raw(Model.NoiDung)
+                </dd>
+
+            </dl>
+
+
+        </div>
+    </div>
+    <div class="card-footer">
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-primary" /> |
+                @Html.ActionLink("Quay lại", "Index")
+            </div>
+        }
+    </div>
+</div>
