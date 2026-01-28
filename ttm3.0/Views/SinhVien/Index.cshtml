@@ -1,29 +1,447 @@
-﻿@model IEnumerable<ttm3._0.Models.tbLopHoc>
-
+@model IEnumerable<ttm3._0.Models.tbLopHoc>
 @{
     ViewBag.Title = "Danh sách các lớp tham gia của sinh viên";
 }
 
-<link href="~/Content/datatables.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <h3>@ViewBag.Title</h3>
-    </div>
-    <div class="card-body">
-        <ul>
-            @foreach (var item in Model)
-            {
-                <li><a href="/SinhVien/KichBan/?IdLopHoc=@item.IdLopHoc">@item.LopHoc</a></li>
-            }
-        </ul>
-    </div>
+<style>
+    :root {
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --card-border: rgba(255, 255, 255, 0.1);
+        --accent-cyan: #00d9ff;
+        --accent-purple: #9333ea;
+        --accent-pink: #ec4899;
+        --text-primary: #ffffff;
+        --text-secondary: #94a3b8;
+        --hover-bg: rgba(0, 217, 255, 0.1);
+    }
+
+    .page-header {
+        margin-bottom: 2rem;
+        animation: slideDown 0.6s ease;
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .page-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .page-title i {
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        margin-left: 3.5rem;
+    }
+
+    .classes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .class-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 0;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+        text-decoration: none;
+        display: block;
+        color: inherit;
+    }
+
+    .class-card:nth-child(1) { animation-delay: 0.1s; }
+    .class-card:nth-child(2) { animation-delay: 0.15s; }
+    .class-card:nth-child(3) { animation-delay: 0.2s; }
+    .class-card:nth-child(4) { animation-delay: 0.25s; }
+    .class-card:nth-child(5) { animation-delay: 0.3s; }
+    .class-card:nth-child(6) { animation-delay: 0.35s; }
+    .class-card:nth-child(7) { animation-delay: 0.4s; }
+    .class-card:nth-child(8) { animation-delay: 0.45s; }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .class-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    .class-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
+        border-color: var(--accent-cyan);
+    }
+
+    .class-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(147, 51, 234, 0.1));
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--card-border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-header-custom::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(0, 217, 255, 0.2) 0%, transparent 70%);
+        transform: translateY(-50%);
+        transition: right 0.6s ease;
+    }
+
+    .class-card:hover .card-header-custom::after {
+        right: -20%;
+    }
+
+    .class-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: white;
+        margin-bottom: 1rem;
+        box-shadow: 0 8px 20px rgba(0, 217, 255, 0.4);
+        transition: all 0.4s ease;
+    }
+
+    .class-card:hover .class-icon {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 12px 30px rgba(0, 217, 255, 0.6);
+    }
+
+    .class-name {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-body-custom {
+        padding: 1.5rem;
+    }
+
+    .class-meta {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .meta-item i {
+        color: var(--accent-cyan);
+    }
+
+    .class-action {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--card-border);
+    }
+
+    .btn-enter {
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-enter:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 217, 255, 0.5);
+    }
+
+    .btn-enter i {
+        transition: transform 0.3s ease;
+    }
+
+    .class-card:hover .btn-enter i {
+        transform: translateX(3px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        animation: fadeInUp 0.6s ease;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .empty-state h3 {
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+    }
+
+    .stats-bar {
+        display: flex;
+        gap: 2rem;
+        padding: 1.5rem;
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        animation: slideDown 0.6s ease;
+    }
+
+    .stat-item {
+        flex: 1;
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+
+    @@media (max-width: 768px) {
+        .classes-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-bar {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <h1 class="page-title">
+        <i class="fas fa-graduation-cap"></i>
+        Lớp Học Của Bạn
+    </h1>
+    <p class="page-subtitle">Chọn lớp học để xem các kịch bản và bài tập</p>
 </div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value">@Model.Count()</div>
+            <div class="stat-label">Tổng số lớp</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-label">Đang hoạt động</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value"><i class="fas fa-rocket"></i></div>
+            <div class="stat-label">Sẵn sàng học tập</div>
+        </div>
+    </div>
+
+    <div class="classes-grid">
+        @{
+            var iconList = new[] { "fa-laptop-code", "fa-shield-alt", "fa-network-wired", "fa-server", "fa-lock", "fa-terminal", "fa-code-branch", "fa-database" };
+            var index = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <a href="/SinhVien/KichBan/?IdLopHoc=@item.IdLopHoc" class="class-card">
+                <div class="card-header-custom">
+                    <div class="class-icon">
+                        <i class="fas @iconList[index % iconList.Length]"></i>
+                    </div>
+                    <h3 class="class-name">@item.LopHoc</h3>
+                </div>
+                <div class="card-body-custom">
+                    <div class="class-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-book"></i>
+                            <span>Kịch bản thực hành</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>Lớp học</span>
+                        </div>
+                    </div>
+                    <div class="class-action">
+                        <span class="meta-item">
+                            <i class="fas fa-circle" style="font-size: 0.5rem; color: #10b981;"></i>
+                            <span style="color: #10b981;">Đang hoạt động</span>
+                        </span>
+                        <button class="btn-enter">
+                            Vào lớp
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </a>
+            index++;
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h3>Chưa có lớp học nào</h3>
+        <p>Bạn chưa được thêm vào lớp học nào. Vui lòng liên hệ với giảng viên.</p>
+    </div>
+}
 
 @section Scripts {
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add ripple effect on card click
+        document.querySelectorAll('.class-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(0, 217, 255, 0.5)';
+                ripple.style.width = ripple.style.height = '20px';
+                ripple.style.left = e.offsetX - 10 + 'px';
+                ripple.style.top = e.offsetY - 10 + 'px';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add keyframe for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @@keyframes ripple {
+                to {
+                    transform: scale(10);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.class-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                }, index * 100);
+            });
+        });
     </script>
 }

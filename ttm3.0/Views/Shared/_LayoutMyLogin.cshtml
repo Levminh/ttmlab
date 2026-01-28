@@ -1,13 +1,76 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - THAO TRƯỜNG MẠNG</title>
+
+    <!-- Font Awesome - Dùng file local để đảm bảo icon luôn load được (không phụ thuộc CDN) -->
+    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
+
+    <!-- TailwindCSS CDN - Chỉ dùng cho development; production nên build Tailwind -->
+    <script>
+        // Tắt cảnh báo "should not be used in production" của Tailwind CDN
+        window.tailwind = { config: {} };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            500: '#2563EB',
+                            600: '#1D4ED8',
+                            700: '#1E40AF'
+                        },
+                        accent: {
+                            500: '#22C55E'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Font chữ cho toàn bộ trang - Loại trừ icon */
+        body, html {
+            font-family: Arial, sans-serif !important;
+        }
+        
+        /* Đảm bảo Font Awesome icons hiển thị đúng (tương thích FA5 local) */
+        i[class*="fa-"],
+        [class*="fa-"]:not([class*="fa-"] [class*="fa-"]),
+        .fas, .far, .fal, .fab, .fa {
+            font-family: "Font Awesome 5 Free", "Font Awesome 6 Free", "Font Awesome 5 Brands", "FontAwesome" !important;
+            font-weight: 900 !important;
+            font-style: normal !important;
+            font-variant: normal !important;
+            text-transform: none !important;
+            line-height: 1 !important;
+            display: inline-block !important;
+            text-rendering: auto !important;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+        }
+        
+        .far {
+            font-weight: 400 !important;
+        }
+        
+        .fab {
+            font-family: "Font Awesome 5 Brands", "Font Awesome 6 Brands", "FontAwesome" !important;
+            font-weight: 400 !important;
+        }
+        
+    </style>
+
     @RenderSection("head", required: false)
 </head>
-<body>
+<body class="min-h-screen bg-slate-900 text-slate-50 antialiased">
     @RenderBody()
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

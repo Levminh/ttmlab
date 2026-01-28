@@ -1,171 +1,793 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>@ViewBag.Title - THAO TRƯỜNG MẠNG</title>
-    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="~/Content/sb-admin-2.min.css" rel="stylesheet" />
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
+    <title>THAO TRƯỜNG MẠNG - Cyber Training Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-light: #f8f9fa;
+            --primary-white: #ffffff;
+            --primary-blue: #0066ff;
+            --accent-cyan: #00a8ff;
+            --accent-green: #00cc66;
+            --accent-orange: #ff6b35;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --text-light: #6b7280;
+            --sidebar-bg: #ffffff;
+            --sidebar-border: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(0, 102, 255, 0.2);
+            --shadow-glow: 0 0 20px rgba(0, 168, 255, 0.3);
+            --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8f0f5 50%, #f5f9fc 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 168, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 204, 102, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 102, 255, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Grid pattern overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        #wrapper {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--sidebar-border);
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .sidebar.toggled {
+            width: 80px;
+        }
+        
+        .sidebar.toggled .sidebar-brand-text,
+        .sidebar.toggled .nav-link span {
+            display: none;
+        }
+        
+        .sidebar.toggled .nav-link {
+            justify-content: center;
+            padding: 0.9rem;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 3px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-blue);
+        }
+        
+        .sidebar-brand {
+            padding: 2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            background: linear-gradient(135deg, rgba(0, 168, 255, 0.1) 0%, rgba(0, 102, 255, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-brand::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @@keyframes shine {
+            to {
+                left: 100%;
+            }
+        }
+        
+        .sidebar-brand-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--primary-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(0, 168, 255, 0.4);
+        }
+        
+        @@keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(0, 168, 255, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 30px rgba(0, 168, 255, 0.6);
+            }
+        }
+        
+        .sidebar-brand-text {
+            font-family: Arial, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+        }
+        
+        .nav-item {
+            list-style: none;
+            margin: 0.5rem 1rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(0, 168, 255, 0.1);
+            color: var(--primary-blue);
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0, 168, 255, 0.15);
+        }
+        
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+        
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .nav-link i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            color: var(--accent-cyan);
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover i,
+        .nav-link.active i {
+            color: var(--primary-blue);
+        }
+        
+        .nav-link:hover i {
+            animation: iconBounce 0.5s ease;
+        }
+        
+        @@keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        .sidebar-divider {
+            margin: 1rem 1.5rem;
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--sidebar-border), transparent);
+        }
+        
+        .collapse-inner {
+            margin-top: 0.5rem;
+            padding-left: 2.5rem;
+        }
+        
+        .collapse-item {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .collapse-item::before {
+            content: '▸';
+            position: absolute;
+            left: 0.7rem;
+            transition: all 0.3s ease;
+            color: var(--accent-cyan);
+        }
+        
+        .collapse-item:hover {
+            background: rgba(0, 168, 255, 0.08);
+            color: var(--primary-blue);
+            transform: translateX(5px);
+        }
+        
+        .collapse-item:hover::before {
+            transform: translateX(3px);
+        }
+        
+        /* Sidebar Toggle */
+        #sidebarToggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            border: 1px solid var(--sidebar-border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 1.2rem;
+        }
+        
+        #sidebarToggle:hover {
+            background: var(--accent-cyan);
+            color: white;
+            transform: rotate(180deg);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--accent-cyan);
+        }
+        
+        #sidebarToggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        /* Content Wrapper */
+        #content-wrapper {
+            flex: 1;
+            margin-left: 280px;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease;
+            padding-bottom: 80px;
+        }
+        
+        #wrapper.sidebar-toggled #content-wrapper {
+            margin-left: 80px;
+        }
+        
+        #content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+        }
+        
+        /* Topbar */
+        .topbar {
+            background: var(--primary-white);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--sidebar-border);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-soft);
+            transition: left 0.3s ease;
+            height: 60px;
+        }
+        
+        #wrapper.sidebar-toggled .topbar {
+            left: 80px;
+        }
+        
+        #sidebarToggleTop {
+            background: var(--primary-light);
+            border: 1px solid var(--sidebar-border);
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #sidebarToggleTop:hover {
+            background: var(--accent-cyan);
+            color: white;
+            border-color: var(--accent-cyan);
+        }
+        
+        #sidebarToggleTop {
+            display: none;
+        }
+        
+        /* Main Content */
+        .container-fluid {
+            padding: 2rem;
+            flex: 1;
+            padding-bottom: calc(80px + 2rem);
+            min-height: calc(100vh - 140px);
+        }
+        
+        /* Footer */
+        .sticky-footer {
+            background: var(--primary-white);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--sidebar-border);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            bottom: 0;
+            left: 280px;
+            right: 0;
+            z-index: 40;
+            transition: left 0.3s ease;
+        }
+        
+        #wrapper.sidebar-toggled .sticky-footer {
+            left: 80px;
+        }
+        
+        .copyright {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* User Account Menu - Compact Card */
+        .user-menu {
+            position: relative;
+            margin-left: auto;
+        }
+        
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: var(--primary-white);
+            border: 1px solid var(--sidebar-border);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+        
+        .user-card:hover {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            border-color: var(--accent-cyan);
+        }
+        
+        .user-card.active {
+            border-color: var(--primary-blue);
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        
+        .user-name {
+            color: #1a1a1a;
+            font-weight: 500;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        
+        .user-card i.fa-chevron-down {
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .user-card.active i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--primary-white);
+            border: 1px solid var(--sidebar-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .user-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--sidebar-border);
+        }
+        
+        .user-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .user-dropdown-item:hover {
+            background: var(--primary-light);
+            color: var(--primary-blue);
+        }
+        
+        .user-dropdown-item.logout {
+            color: #dc2626;
+        }
+        
+        .user-dropdown-item.logout:hover {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .user-dropdown-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        
+        /* Scroll to top */
+        .scroll-to-top {
+            position: fixed;
+            right: 2rem;
+            bottom: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--primary-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: var(--shadow-glow);
+            transition: all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .scroll-to-top.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .scroll-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 0 40px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            #content-wrapper {
+                margin-left: 0;
+            }
+            
+            .topbar {
+                left: 0 !important;
+            }
+            
+            .sticky-footer {
+                left: 0 !important;
+            }
+            
+            #sidebarToggleTop {
+                display: block;
+            }
+        }
+        
+        /* Collapse animation */
+        .collapse {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapse.show {
+            max-height: 500px;
+        }
+        
+        /* Loading animation for demo */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .nav-item {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .nav-item:nth-child(1) { animation-delay: 0.1s; }
+        .nav-item:nth-child(2) { animation-delay: 0.15s; }
+        .nav-item:nth-child(3) { animation-delay: 0.2s; }
+        .nav-item:nth-child(4) { animation-delay: 0.25s; }
+        .nav-item:nth-child(5) { animation-delay: 0.3s; }
+        .nav-item:nth-child(6) { animation-delay: 0.35s; }
+        .nav-item:nth-child(7) { animation-delay: 0.4s; }
+        .nav-item:nth-child(8) { animation-delay: 0.45s; }
+    </style>
 </head>
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <div class="sidebar" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/SinhVien/">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+            <a class="sidebar-brand" href="/SinhVien/">
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-network-wired"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">THAO TRƯỜNG MẠNG</div>
+                <div class="sidebar-brand-text">THAO TRƯỜNG MẠNG</div>
             </a>
-            @if (User.IsInRole("Admin"))
-            {
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-                <li class="nav-item">
+            
+            <!-- Admin Menu -->
+            <div id="adminMenu">
+                <hr class="sidebar-divider">
+                <div class="nav-item">
                     <a class="nav-link" href="/tbLopHocs/">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <i class="fas fa-chalkboard-teacher"></i>
                         <span>Lớp học</span>
                     </a>
-                </li>
+                </div>
 
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-                <li class="nav-item">
+                <hr class="sidebar-divider">
+                <div class="nav-item">
                     <a class="nav-link" href="/tbKichBans/">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fas fa-file-code"></i>
                         <span>Kịch Bản</span>
                     </a>
-                </li>
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-                <li class="nav-item">
+                </div>
+                
+                <hr class="sidebar-divider">
+                <div class="nav-item">
                     <a class="nav-link" href="/tbProjectOpenStacks/">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fas fa-flask"></i>
                         <span>Phòng Lab</span>
                     </a>
-                </li>
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-                <li class="nav-item">
+                </div>
+                
+                <hr class="sidebar-divider">
+                <div class="nav-item">
                     <a class="nav-link" href="/tbSoDoMangs/">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fas fa-project-diagram"></i>
                         <span>Sơ đồ mạng</span>
                     </a>
-                </li>               
+                </div>
 
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-                <!-- Nav Item - Tài khoản -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePages2">
-                        <i class="fas fa-fw fa-chart-area"></i>
+                <hr class="sidebar-divider">
+                <div class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStats">
+                        <i class="fas fa-chart-line"></i>
                         <span>Thống kê</span>
                     </a>
-                    <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
+                    <div id="collapseStats" class="collapse">
+                        <div class="collapse-inner">
                             <a class="collapse-item" href="/tbKichBans/Report">Kịch bản</a>
                             <a class="collapse-item" href="/tbLopHocs/tkSinhVien">Sinh viên</a>
-                            <div class="collapse-divider"></div>
                         </div>
                     </div>
-                </li>
+                </div>
 
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-                <!-- Nav Item - Tài khoản -->
-                <li class="nav-item">
+                <hr class="sidebar-divider">
+                <div class="nav-item">
                     <a class="nav-link" href="/AspNetUsers/">
-                        <i class="fas fa-fw fa-wrench"></i>
+                        <i class="fas fa-user-shield"></i>
                         <span>Tài khoản</span>
                     </a>
-                </li>
-
-                
-            }
-            else
-            {
-                if (User.IsInRole("Student"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/SinhVien/">
-                            <i class="fas fa-fw fa-wrench"></i>
-                            <span>Sinh viên</span>
-                        </a>
-                    </li>
-                }
-                else
-                {
-                    <!-- Divider -->
-                    <hr class="sidebar-divider my-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tbLopHocs/">
-                            <i class="fas fa-fw fa-tachometer-alt"></i>
-                            <span>Lớp học</span>
-                        </a>
-                    </li>
-
-                    <hr class="sidebar-divider my-0">
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1" aria-expanded="true" aria-controls="collapsePages1">
-                            <i class="fas fa-fw fa-chart-area"></i>
-                            <span>Giám sát</span>
-                        </a>
-                        <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <a class="collapse-item" href="http://gs.firmware.vn/en-US/app/crc500/c500_windowsDasboard?fbclid=IwAR0LBU-oNozYinCEkvTsvRf4smxg90odwWR-qJ7rM8HxwtUcieMXHn6JZE0" target="_blank">C500_Win7L6G</a>
-                                <a class="collapse-item" href="http://gs.firmware.vn/en-US/app/crc500/c500_lh_ms17010?fbclid=IwAR0LBU-oNozYinCEkvTsvRf4smxg90odwWR-qJ7rM8HxwtUcieMXHn6JZE0" target="_blank">C500_LH_MS17-010</a>
-                                <a class="collapse-item" href="http://gs.firmware.vn/en-US/app/crc500/c500_lh_lohongweb?fbclid=IwAR3zNv8vffec4KeRUb23oUwF6x8HUlvT38GPw8aAdf0Sb8VJDODqhFvjSSA" target="_blank">C500_LH_LoHongWeb</a>
-                                <div class="collapse-divider"></div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- Divider -->
-                    <hr class="sidebar-divider my-0">
-                    <!-- Nav Item - Tài khoản -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePages2">
-                            <i class="fas fa-fw fa-chart-area"></i>
-                            <span>Thống kê</span>
-                        </a>
-                        <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <a class="collapse-item" href="/tbKichBans/Report">Kịch bản</a>
-                                <a class="collapse-item" href="/tbLopHocs/tkSinhVien">Sinh viên</a>
-                                <div class="collapse-divider"></div>
-                            </div>
-                        </div>
-                    </li>
-                }
-            }
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
             </div>
-        </ul>
+            
+            <!-- Student Menu -->
+            <div id="studentMenu" style="display: none;">
+                <div class="nav-item">
+                    <a class="nav-link" href="/SinhVien/">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Sinh viên</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Teacher Menu -->
+            <div id="teacherMenu" style="display: none;">
+                <hr class="sidebar-divider">
+                <div class="nav-item">
+                    <a class="nav-link" href="/tbLopHocs/">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Lớp học</span>
+                    </a>
+                </div>
+
+                <hr class="sidebar-divider">
+                <div class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMonitor">
+                        <i class="fas fa-desktop"></i>
+                        <span>Giám sát</span>
+                    </a>
+                    <div id="collapseMonitor" class="collapse">
+                        <div class="collapse-inner">
+                            <a class="collapse-item" href="http://gs.firmware.vn/en-US/app/crc500/c500_windowsDasboard" target="_blank">C500_Win7L6G</a>
+                            <a class="collapse-item" href="http://gs.firmware.vn/en-US/app/crc500/c500_lh_ms17010" target="_blank">C500_LH_MS17-010</a>
+                            <a class="collapse-item" href="http://gs.firmware.vn/en-US/app/crc500/c500_lh_lohongweb" target="_blank">C500_LH_LoHongWeb</a>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="sidebar-divider">
+                <div class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStats2">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Thống kê</span>
+                    </a>
+                    <div id="collapseStats2" class="collapse">
+                        <div class="collapse-inner">
+                            <a class="collapse-item" href="/tbKichBans/Report">Kịch bản</a>
+                            <a class="collapse-item" href="/tbLopHocs/tkSinhVien">Sinh viên</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar Toggler -->
+            <div class="text-center" style="padding: 1.5rem;">
+                <button id="sidebarToggle" title="Thu nhỏ/Mở rộng sidebar">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
         <!-- End of Sidebar -->
+        
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper">
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="topbar">
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <button id="sidebarToggleTop">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <!-- Topbar Search -->
                     <!-- Topbar Navbar -->
-                    @Html.Partial("_LoginPartial")
+                    <div class="user-menu">
+                        @Html.Partial("_LoginPartial")
+                    </div>
                 </nav>
                 <!-- End of Topbar -->
+                
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     @RenderBody()
@@ -173,11 +795,12 @@
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
+            
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer">
                 <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; BAN CHỦ NHIỆM ĐỀ TÀI 2020</span>
+                    <div class="copyright">
+                        <span>Copyright © BAN CHỦ NHIỆM ĐỀ TÀI 2020 | Designed with ❤️</span>
                     </div>
                 </div>
             </footer>
@@ -186,20 +809,63 @@
         <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
+    
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <a class="scroll-to-top" href="#page-top" id="scrollTop">
         <i class="fas fa-angle-up"></i>
     </a>
-    <!-- Bootstrap core JavaScript-->
-    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
-    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="~/Scripts/sb-admin-2.min.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
 
+    <script>
+        // Collapse toggle
+        document.querySelectorAll('[data-toggle="collapse"]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('data-target'));
+                if (target) {
+                    target.classList.toggle('show');
+                    this.classList.toggle('collapsed');
+                }
+            });
+        });
+        
+        // Sidebar toggle for mobile
+        document.getElementById('sidebarToggleTop')?.addEventListener('click', function() {
+            document.getElementById('accordionSidebar').classList.toggle('show');
+        });
+        
+        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const wrapper = document.getElementById('wrapper');
+            const icon = this.querySelector('i');
+            
+            sidebar.classList.toggle('toggled');
+            wrapper.classList.toggle('sidebar-toggled');
+            
+            // Rotate icon when toggled
+            if (sidebar.classList.contains('toggled')) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            }
+        });
+        
+        // Scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollButton = document.getElementById('scrollTop');
+            if (window.pageYOffset > 100) {
+                scrollButton.classList.add('show');
+            } else {
+                scrollButton.classList.remove('show');
+            }
+        });
+        
+        document.getElementById('scrollTop')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
 </html>
