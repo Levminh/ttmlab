@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -43,7 +43,7 @@ namespace ttm3._0.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Mât khẩu hiện tại")]
+        [Display(Name = "Mật khẩu hiện tại")]
         public string OldPassword { get; set; }
 
         [Required]
