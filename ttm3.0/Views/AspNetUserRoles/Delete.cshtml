@@ -1,35 +1,39 @@
-﻿@model ttm3._0.Models.AspNetUserRole
+@model ttm3._0.Models.AspNetUserRole
 
 @{
     ViewBag.Title = "Xóa quyền hạn";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string ControlName = "AspNetUserRole";
 }
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h3>Xóa quyền hạn</h3>
-        <h4>Bạn có chắc muốn xóa quyền hạn nàys?</h4>
-    </div>
-    <div class="card-body">
-        <div>
+
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-user-minus"></i></div>
+                <div>
+                    <h1 class="ttm-title">Xóa quyền hạn</h1>
+                    <p class="ttm-subtitle">Bạn có chắc muốn xóa quyền hạn này?</p>
+                </div>
+            </div>
+        </div>
+        <div class="ttm-body">
             <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.AspNetRole.Name)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.AspNetRole.Name)
-                </dd>
-
+                <dt>@Html.DisplayNameFor(model => model.AspNetRole.Name)</dt>
+                <dd>@Html.DisplayFor(model => model.AspNetRole.Name)</dd>
             </dl>
-
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
-
-                <div class="form-actions no-color">
-                    <input type="submit" value="Xóa" class="btn btn-primary" /> |
-                    @Html.ActionLink("Quay lại danh sách quyền hạn", "Index", @ControlName, null, new { @class = "btn btn-primary" })
+                <div class="form-actions no-color" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+                    <button type="submit" class="ttm-btn ttm-btn-primary" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>Xóa</span>
+                    </button>
+                    <a href="@Url.Action("Index", "AspNetUserRoles", new { id = Model.UserId })" class="ttm-btn ttm-btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Quay lại</span>
+                    </a>
                 </div>
             }
         </div>

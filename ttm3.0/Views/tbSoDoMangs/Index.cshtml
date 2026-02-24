@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ttm3._0.Models.tbSoDoMang>
+@model IEnumerable<ttm3._0.Models.tbSoDoMang>
 
 @{
     ViewBag.Title = "Danh sách sơ đồ mạng";
@@ -6,56 +6,63 @@
 }
 
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <p>
-            @Html.ActionLink("Thêm mới sơ đồ mạng", "Create", null, new { @class = "btn btn-success" }) |
-            @Html.ActionLink("Cài đặt cấu hình EVE", "Edit","cleves",null, new { @class = "btn btn-success" })
-        </p>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="display table table-bordered" id="table_project">
-                <thead>
-                <th style="width:30px;">
-                    TT
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ten)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UUID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Path)
-                </th>
-                <th></th>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                    <tr>
-                        <td></td>
-                        <td class="editable-ten" id="@item.Id">
-                            @Html.DisplayFor(modelItem => item.Ten)
-                        </td>
-                        <td class="editable-uuid" id="@item.Id">
-                            @Html.DisplayFor(modelItem => item.UUID)
-                        </td>
-                        <td class="editable-path" id="@item.Id">
-                            @Html.DisplayFor(modelItem => item.Path)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Xóa", "Delete", new { id = item.Id }) |
-                            @Html.ActionLink("Danh sách máy tính", "Index", "tbSoDoMangMays", new { IdSoDoMang = item.Id }, null)
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-project-diagram"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Quản lý sơ đồ mạng EVE-NG, cấu hình và danh sách máy tính.</p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <a href="@Url.Action("Create", "tbSoDoMangs")" class="ttm-btn ttm-btn-add">
+                    <i class="fas fa-plus"></i>
+                    <span>Thêm mới sơ đồ mạng</span>
+                </a>
+                <a href="@Url.Action("Edit", "cleves", null)" class="ttm-btn ttm-btn-secondary">
+                    <i class="fas fa-cog"></i>
+                    <span>Cài đặt cấu hình EVE</span>
+                </a>
+            </div>
+        </div>
+        <div class="ttm-body">
+            <div class="table-responsive ttm-table-wrap">
+                <table class="ttm-table display table table-bordered" id="table_project">
+                    <thead>
+                        <tr>
+                            <th class="ttm-col-tt" style="width:40px;">TT</th>
+                            <th>@Html.DisplayNameFor(model => model.Ten)</th>
+                            <th>@Html.DisplayNameFor(model => model.UUID)</th>
+                            <th>@Html.DisplayNameFor(model => model.Path)</th>
+                            <th class="ttm-col-actions" style="min-width:140px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ttm-col-tt"></td>
+                                <td class="editable-ten" id="@item.Id">@Html.DisplayFor(modelItem => item.Ten)</td>
+                                <td class="editable-uuid" id="@item.Id">@Html.DisplayFor(modelItem => item.UUID)</td>
+                                <td class="editable-path" id="@item.Id">@Html.DisplayFor(modelItem => item.Path)</td>
+                                <td class="ttm-col-actions">
+                                    <div class="ttm-actions">
+                                        <a href="@Url.Action("Delete", "tbSoDoMangs", new { id = item.Id })" class="ttm-act ttm-act-del" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                        <a href="@Url.Action("Index", "tbSoDoMangMays", new { IdSoDoMang = item.Id })" class="ttm-act" title="Danh sách máy tính"><i class="fas fa-server"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
@@ -66,38 +73,27 @@
         $(document).ready(function () {
             var t = $('#table_project').DataTable({
                 "pageLength": 50,
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [[1, 'asc']]
+                "columnDefs": [{ "searchable": false, "orderable": false, "targets": 0 }, { "orderable": false, "targets": -1 }],
+                "order": [[1, 'asc']],
+                "language": {
+                    "search": "Tìm kiếm:",
+                    "lengthMenu": "Hiển thị _MENU_ dòng",
+                    "info": "Đang xem _START_–_END_ / _TOTAL_ dòng",
+                    "infoEmpty": "Không có dữ liệu",
+                    "infoFiltered": "(lọc từ _MAX_ dòng)",
+                    "zeroRecords": "Không tìm thấy kết quả",
+                    "paginate": { "first": "Đầu", "last": "Cuối", "next": "Sau", "previous": "Trước" }
+                }
             });
-
             t.on('order.dt search.dt', function () {
                 t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                     cell.innerHTML = i + 1;
                 });
             }).draw();
 
-            $(".editable-uuid").editable("/tbSoDoMangs/UpdateUUID", {
-                type: "text", submit: 'OK',
-                cancel: 'Hủy',
-                data: function (string) { return $.trim(string) }
-            });
-
-            $(".editable-path").editable("/tbSoDoMangs/UpdatePath", {
-                type: "text", submit: 'OK',
-                cancel: 'Hủy',
-                data: function (string) { return $.trim(string) }
-            });
-
-            $(".editable-ten").editable("/tbSoDoMangs/UpdateTen", {
-                type: "text", submit: 'OK',
-                cancel: 'Hủy',
-                data: function (string) { return $.trim(string) }
-            });
-        })
+            $(".editable-uuid").editable("/tbSoDoMangs/UpdateUUID", { type: "text", submit: 'OK', cancel: 'Hủy', data: function (string) { return $.trim(string); } });
+            $(".editable-path").editable("/tbSoDoMangs/UpdatePath", { type: "text", submit: 'OK', cancel: 'Hủy', data: function (string) { return $.trim(string); } });
+            $(".editable-ten").editable("/tbSoDoMangs/UpdateTen", { type: "text", submit: 'OK', cancel: 'Hủy', data: function (string) { return $.trim(string); } });
+        });
     </script>
 }
-

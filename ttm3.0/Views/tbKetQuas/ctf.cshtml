@@ -1,14 +1,22 @@
-﻿@model ttm3._0.Models.tbKetQua
+@model ttm3._0.Models.tbKetQua
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <h3>@ViewBag.Title</h3>
-    </div>
-    <div class="card-body">
-        @using (Html.BeginForm())
+
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-flag-checkered"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Nộp đáp án kịch bản CTF.</p>
+                </div>
+            </div>
+        </div>
+        <div class="ttm-body ttm-form">
+            @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
@@ -28,11 +36,15 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="SUBMIT" class="btn btn-primary" />
+                        <button type="submit" class="ttm-btn ttm-btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Nộp bài</span>
+                        </button>
                     </div>
                 </div>
             </div>
         }
+        </div>
     </div>
 </div>
 @section Scripts {

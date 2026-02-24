@@ -1,16 +1,30 @@
-﻿@model ttm3._0.Models.AspNetUserRole
+@model ttm3._0.Models.AspNetUserRole
 
 @{
     ViewBag.Title = "Thêm quyền hạn";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string ControlName = "AspNetUserRole";
 }
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h2>Thêm quyền hạn</h2>
-    </div>
-    <div class="card-body">
-        @using (Html.BeginForm())
+
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-user-plus"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Gán vai trò cho tài khoản.</p>
+                </div>
+            </div>
+            <div>
+                <a href="@Url.Action("Index", "AspNetUserRoles", new { id = Model.UserId })" class="ttm-btn ttm-btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quay lại</span>
+                </a>
+            </div>
+        </div>
+        <div class="ttm-body ttm-form">
+            @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.UserId)
@@ -25,14 +39,18 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Thêm quyền hạn" class="btn btn-primary" />
+                        <button type="submit" class="ttm-btn ttm-btn-primary">
+                            <i class="fas fa-save"></i>
+                            <span>Thêm quyền hạn</span>
+                        </button>
+                        <a href="@Url.Action("Index", "AspNetUserRoles", new { id = Model.UserId })" class="ttm-btn ttm-btn-secondary" style="margin-left: 0.5rem;">
+                            <i class="fas fa-times"></i>
+                            <span>Hủy</span>
+                        </a>
                     </div>
                 </div>
             </div>
         }
-
-        <div>
-            @Html.ActionLink("Quay lại danh sách quyền hạn", "Index", @ControlName, null, new { @class = "btn btn-primary" })
         </div>
     </div>
 </div>

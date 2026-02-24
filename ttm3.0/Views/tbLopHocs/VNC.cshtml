@@ -1,61 +1,90 @@
-﻿@model IEnumerable<ttm3._0.Models.tbHocVienLopHoc>
+@model IEnumerable<ttm3._0.Models.tbHocVienLopHoc>
 
 @{
     ViewBag.Title = "Theo dõi màn hình sinh viên";
-    int Count = (int)ViewBag.Count;
-    int dem = -1;
+    int count = (int)ViewBag.Count;
+    int soLuong = (int)ViewBag.SoLuong;
+    int idx = -1;
 }
 
-<link href="~/Content/datatables.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-body">
-        <div style="width:1090px;">
-            @for (int i = 0; i < (int)ViewBag.SoLuong; i++)
-            {
-                <div class="row" style="margin-left:5px; margin-right:5px;">
-                    @for (int j = 0; j < 3; j++)
-                    {
-                        dem = dem + 1;
-                    <div class="col" style="border:solid 1px blue;">
-                        @if (dem < Count)
-                        {
-                            var v = Model.FirstOrDefault(p => p.TT == dem);
-                            if (v != null && v.tbComputer != null && v.AspNetUser != null)
-                            {
-                                <span style="width:300px;height:300px; display:inline-block;"></span>
-                                <iframe src="@v.tbComputer.VncUri" class="iframe"></iframe>
-                                <a href="@v.tbComputer.VncUri" target="_blank">@v.AspNetUser.Email</a>
-                            }
-                            else
-                            {
-                                <span style="width:300px;height:300px; display:inline-block;"></span>
-                                <iframe src="" class="iframe"></iframe>
-                                if (v != null && v.AspNetUser != null)
-                                {<h6>@v.AspNetUser.Email</h6>}
-                        }
-                    }
-                    else
-                    {
-                        <span style="width:300px;height:300px; display:inline-block;"></span>
-                        <iframe src="" class="iframe"></iframe>
-                    }
-                    </div>
-                    }
+<link href="~/Content/lophoc.css" rel="stylesheet" />
+
+<style>
+    .lh-vnc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 1100px; }
+    .lh-vnc-cell {
+        border: 1px solid var(--sidebar-border, #e5e7eb);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--primary-light, #f8f9fa);
+        box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .lh-vnc-cell.has-vnc { border-color: rgba(0, 168, 255, 0.3); }
+    .lh-vnc-cell .lh-vnc-wrap { position: relative; width: 100%; padding-top: 100%; background: #1a1a1a; }
+    .lh-vnc-cell iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block; }
+    .lh-vnc-cell .lh-vnc-label {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary, #4a5568);
+        background: var(--primary-white, #fff);
+        border-top: 1px solid var(--sidebar-border, #e5e7eb);
+    }
+    .lh-vnc-cell .lh-vnc-label a { color: var(--accent-cyan, #00a8ff); text-decoration: none; }
+    .lh-vnc-cell .lh-vnc-label a:hover { text-decoration: underline; }
+</style>
+
+<div class="lh-page">
+    <div class="lh-card">
+        <div class="lh-header">
+            <div class="lh-header-left">
+                <div class="lh-icon"><i class="fas fa-desktop"></i></div>
+                <div>
+                    <h1 class="lh-title">@ViewBag.Title</h1>
+                    <p class="lh-subtitle">Xem màn hình VNC của từng máy sinh viên. Click vào link để mở cửa sổ riêng.</p>
                 </div>
-            }
+            </div>
+            <div>
+                <a href="@Url.Action("HocVien", "tbLopHocs", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+            </div>
+        </div>
+        <div class="lh-body">
+            <div class="lh-vnc-grid">
+                @for (int i = 0; i < soLuong; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        idx++;
+                        var v = idx < count ? Model.FirstOrDefault(p => p.TT == idx) : null;
+                        var hasVnc = v != null && v.tbComputer != null && v.AspNetUser != null && !string.IsNullOrEmpty(v.tbComputer.VncUri);
+                        <div class="lh-vnc-cell @(hasVnc ? "has-vnc" : "")">
+                            <div class="lh-vnc-wrap">
+                                @if (hasVnc)
+                                {
+                                    <iframe src="@v.tbComputer.VncUri" title="@(v.AspNetUser.Email)"></iframe>
+                                }
+                            </div>
+                            <div class="lh-vnc-label">
+                                @if (hasVnc)
+                                {
+                                    <a href="@v.tbComputer.VncUri" target="_blank">@v.AspNetUser.Email</a>
+                                }
+                                else if (v?.AspNetUser != null)
+                                {
+                                    @v.AspNetUser.Email
+                                }
+                                else
+                                {
+                                    <span>—</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     </div>
-    <div class="card-footer">
-        @Html.ActionLink("Quay lại", "HocVien", "tbLopHocs", new { IdLopHoc = ViewBag.IdLopHoc }, null)
-    </div>
 </div>
+
 @section Scripts {
-    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script src="~/Scripts/datatables.min.js"></script>
-    <script src="~/Scripts/jquery.jeditable.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        
-    </script>
 }

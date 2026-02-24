@@ -1,51 +1,67 @@
-﻿@model IEnumerable<ttm3._0.Models.clTKSinhVien>
+@model IEnumerable<ttm3._0.Models.clTKSinhVien>
 
 @{
-    ViewBag.Title = "Thống kê kết quả của sinh viên";
+    ViewBag.Title = "Thống kê kết quả sinh viên";
 }
 
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <h3>@ViewBag.Title</h3>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="display table table-bordered" id="table_tbHocVien">
-                <thead>
-                    <th style="width:30px;">
-                        TT
-                    </th>
-                    <th>
-                        Sinh viên
-                    </th>
-                    <th>
-                        Tổng điểm
-                    </th>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
+<link href="~/Content/lophoc.css" rel="stylesheet" />
 
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SinhVien.FullName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Lop)
-                            </td>
-                            <td>
-                                @item.TongDiem
-                            </td>
+<style>
+    .lh-body .dataTables_wrapper { font-size: 0.9rem; }
+    .lh-body .dataTables_length, .lh-body .dataTables_filter { margin-bottom: 0.75rem; }
+    .lh-body .dataTables_filter input { padding: 8px 12px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin-left: 6px; }
+    .lh-body .dataTables_filter input:focus { outline: none; border-color: var(--accent-cyan, #00a8ff); box-shadow: 0 0 0 2px rgba(0, 168, 255, 0.15); }
+    .lh-body .dataTables_length select { padding: 6px 28px 6px 10px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin: 0 6px; }
+    .lh-body .dataTables_info { color: var(--text-light, #6b7280); }
+    .lh-body .dataTables_paginate { padding-top: 1rem; }
+    .lh-body .dataTables_paginate .paginate_button { padding: 6px 12px !important; margin: 0 2px !important; border-radius: 8px !important; border: 1px solid var(--sidebar-border, #e5e7eb) !important; background: var(--primary-white, #fff) !important; color: var(--text-secondary, #4a5568) !important; }
+    .lh-body .dataTables_paginate .paginate_button:hover { background: rgba(0, 168, 255, 0.1) !important; border-color: var(--accent-cyan, #00a8ff) !important; color: var(--primary-blue, #0066ff) !important; }
+    .lh-body .dataTables_paginate .paginate_button.current { background: linear-gradient(135deg, var(--accent-cyan, #00a8ff), var(--primary-blue, #0066ff)) !important; border-color: transparent !important; color: #fff !important; }
+</style>
+
+<div class="lh-page">
+    <div class="lh-card">
+        <div class="lh-header">
+            <div class="lh-header-left">
+                <div class="lh-icon"><i class="fas fa-chart-line"></i></div>
+                <div>
+                    <h1 class="lh-title">@ViewBag.Title</h1>
+                    <p class="lh-subtitle">Tổng hợp điểm và lớp của từng sinh viên.</p>
+                </div>
+            </div>
+            <div>
+                <a href="@Url.Action("Index")" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+            </div>
+        </div>
+        <div class="lh-body">
+            <div class="table-responsive lh-table-wrap">
+                <table class="lh-table display table table-bordered" id="table_tbHocVien">
+                    <thead>
+                        <tr>
+                            <th class="lh-col-tt" style="width:40px;">TT</th>
+                            <th>Sinh viên</th>
+                            <th>Lớp</th>
+                            <th>Tổng điểm</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="lh-col-tt"></td>
+                                <td>@(item.SinhVien?.FullName)</td>
+                                <td>@(item.Lop)</td>
+                                <td>@item.TongDiem</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
@@ -53,21 +69,16 @@
     <script src="~/Scripts/jquery.jeditable.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $(document).ready(function () {
+        $(function () {
             var t = $('#table_tbHocVien').DataTable({
-                "pageLength": 50,
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }]               
+                pageLength: 50,
+                columnDefs: [{ searchable: false, orderable: false, targets: 0 }],
+                order: [[3, 'desc']],
+                language: { search: 'Tìm kiếm:', lengthMenu: 'Hiển thị _MENU_ dòng', info: 'Đang xem _START_–_END_ / _TOTAL_ dòng', infoEmpty: 'Không có dữ liệu', infoFiltered: '(lọc từ _MAX_ dòng)', zeroRecords: 'Không tìm thấy kết quả', paginate: { first: 'Đầu', last: 'Cuối', next: 'Sau', previous: 'Trước' } }
             });
-
             t.on('order.dt search.dt', function () {
-                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) { cell.innerHTML = i + 1; });
             }).draw();
-        })
+        });
     </script>
 }

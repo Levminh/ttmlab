@@ -1,73 +1,77 @@
-﻿@model ttm3._0.Models.clTaiKhoan
+@model ttm3._0.Models.clTaiKhoan
 
 @{
     ViewBag.Title = "Tạo tài khoản sinh viên";
+    var idLop = Model?.IdLop;
 }
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h3>@ViewBag.Title</h3>
-    </div>
-    <div class="card-body">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Content/lophoc.css" rel="stylesheet" />
 
-            <div class="form-horizontal">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model=>model.IdLop)
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TiepDauNgu, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.TiepDauNgu, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.TiepDauNgu, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+<style>
+    .lh-form .pw-input-wrap { position: relative; }
+    .lh-form .pw-input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light, #6b7280); font-size: 0.95rem; pointer-events: none; }
+    .lh-form .pw-input-wrap input { padding-left: 42px; }
+</style>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SoTaiKhoan, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.SoTaiKhoan, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.SoTaiKhoan, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.BatDau, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.BatDau, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.BatDau, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @required = "required" })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Tạo tài khoản" class="btn btn-default" />
-                    </div>
+<div class="lh-page">
+    <div class="lh-card">
+        <div class="lh-header">
+            <div class="lh-header-left">
+                <div class="lh-icon"><i class="fas fa-user-plus"></i></div>
+                <div>
+                    <h1 class="lh-title">@ViewBag.Title</h1>
+                    <p class="lh-subtitle">Tạo hàng loạt tài khoản sinh viên theo tiếp đầu ngữ và số lượng. Mật khẩu mặc định áp dụng cho tất cả.</p>
                 </div>
             </div>
-        }
-    </div>
-    <div class="card-footer">
-        @Html.ActionLink("Quay lại", "HocVien", "tbLopHocs", new { IdLopHoc=Model.IdLop }, null)
+        </div>
+        <div class="lh-body">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "lh-form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+                @Html.HiddenFor(model => model.IdLop)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TiepDauNgu)
+                    @Html.EditorFor(model => model.TiepDauNgu, new { htmlAttributes = new { @class = "form-control", placeholder = "VD: sinhvien" } })
+                    @Html.ValidationMessageFor(model => model.TiepDauNgu, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SoTaiKhoan)
+                    @Html.EditorFor(model => model.SoTaiKhoan, new { htmlAttributes = new { @class = "form-control", placeholder = "Số lượng tài khoản cần tạo" } })
+                    @Html.ValidationMessageFor(model => model.SoTaiKhoan, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BatDau)
+                    @Html.EditorFor(model => model.BatDau, new { htmlAttributes = new { @class = "form-control", placeholder = "Số bắt đầu (VD: 1)" } })
+                    @Html.ValidationMessageFor(model => model.BatDau, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    <div class="pw-input-wrap">
+                        <i class="fas fa-lock"></i>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Mật khẩu chung cho tất cả tài khoản", required = "required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    <div class="pw-input-wrap">
+                        <i class="fas fa-check-double"></i>
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Nhập lại mật khẩu" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="lh-actions">
+                    <button type="submit" class="lh-btn lh-btn-primary"><i class="fas fa-user-plus"></i> Tạo tài khoản</button>
+                    <a href="@Url.Action("HocVien", "tbLopHocs", new { IdLopHoc = idLop })" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                </div>
+            }
+        </div>
     </div>
 </div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

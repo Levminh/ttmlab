@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OpenStack.Authentication.V3.Auth;
 using OpenStack.Compute.v2_1;
@@ -505,6 +505,7 @@ namespace ttm3._0.Controllers
             }
             
             ViewBag.LstKB = lstKB;
+            ViewBag.IdLopHoc = IdLopHoc;
             return View(lstKQ.OrderByDescending(o=>o.TongDiem));
         }
 

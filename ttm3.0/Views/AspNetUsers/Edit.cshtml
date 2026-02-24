@@ -1,17 +1,28 @@
-﻿@model ttm3._0.Models.AspNetUser
+@model ttm3._0.Models.AspNetUser
 
 @{
     ViewBag.Title = "Chỉnh sửa tài khoản";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h2>@ViewBag.Title</h2>
-    </div>
-    <div class="card-body">
-        <
-
-        @using (Html.BeginForm())
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-user-edit"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Cập nhật thông tin và mật khẩu tài khoản.</p>
+                </div>
+            </div>
+            <div>
+                <a href="@Url.Action("Index", "AspNetUsers")" class="ttm-btn ttm-btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quay lại</span>
+                </a>
+            </div>
+        </div>
+        <div class="ttm-body ttm-form">
+            @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
@@ -67,13 +78,18 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Lưu" class="btn btn-primary" />
+                    <button type="submit" class="ttm-btn ttm-btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span>Lưu</span>
+                    </button>
+                    <a href="@Url.Action("Index", "AspNetUsers")" class="ttm-btn ttm-btn-secondary" style="margin-left: 0.5rem;">
+                        <i class="fas fa-times"></i>
+                        <span>Hủy</span>
+                    </a>
                 </div>
             </div>
         </div>
         }
-        <div>
-            @Html.ActionLink("Quay lại danh sách tài khoản", "Index")
         </div>
     </div>
 </div>

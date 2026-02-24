@@ -1,54 +1,57 @@
-﻿@model IEnumerable<ttm3._0.Models.tbGiamSat>
+@model IEnumerable<ttm3._0.Models.tbGiamSat>
 
 @{
     ViewBag.Title = "Danh sách link giám sát";
 }
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <h3>@ViewBag.Title</h3>
-        <p>
-            @Html.ActionLink("Thêm mới", "Create", new {id=ViewBag.id }, new { @class = "btn btn-success" })
-        </p>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="display table table-bordered" id="table_tbGiamSat" style="width:100%">
-                <thead>
-                <th style="width:30px;">
-                    TT
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ten)
-                </th>
-                <th style="width:600px;">
-                    @Html.DisplayNameFor(model => model.Link)
-                </th>
-                <th style="min-width:60px"></th>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td></td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Ten)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Link2)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
-                                @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="card-footer">
 
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-link"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Quản lý link giám sát phòng lab.</p>
+                </div>
+            </div>
+            <div>
+                <a href="@Url.Action("Create", "tbGiamSats", new { id = ViewBag.id })" class="ttm-btn ttm-btn-add">
+                    <i class="fas fa-plus"></i>
+                    <span>Thêm mới</span>
+                </a>
+            </div>
+        </div>
+        <div class="ttm-body">
+            <div class="table-responsive ttm-table-wrap">
+                <table class="ttm-table display table table-bordered" id="table_tbGiamSat" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="ttm-col-tt" style="width:40px;">TT</th>
+                            <th>@Html.DisplayNameFor(model => model.Ten)</th>
+                            <th style="width:600px;">@Html.DisplayNameFor(model => model.Link)</th>
+                            <th class="ttm-col-actions" style="min-width:100px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ttm-col-tt"></td>
+                                <td>@Html.DisplayFor(modelItem => item.Ten)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Link2)</td>
+                                <td class="ttm-col-actions">
+                                    <div class="ttm-actions">
+                                        <a href="@Url.Action("Edit", "tbGiamSats", new { id = item.Id })" class="ttm-act" title="Sửa"><i class="fas fa-edit"></i></a>
+                                        <a href="@Url.Action("Delete", "tbGiamSats", new { id = item.Id })" class="ttm-act ttm-act-del" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 @section Scripts {
@@ -64,8 +67,9 @@
                     "searchable": false,
                     "orderable": false,
                     "targets": 0
-                }],
-                "order": [[1, 'asc']]
+                }, { "orderable": false, "targets": -1 }],
+                "order": [[1, 'asc']],
+                "language": { "search": "Tìm kiếm:", "lengthMenu": "Hiển thị _MENU_ dòng", "info": "Đang xem _START_–_END_ / _TOTAL_ dòng", "paginate": { "first": "Đầu", "last": "Cuối", "next": "Sau", "previous": "Trước" } }
             });
 
             t.on('order.dt search.dt', function () {

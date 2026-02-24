@@ -1,86 +1,106 @@
-﻿@model IEnumerable<ttm3._0.Models.tbLopHocKichBan>
+@model IEnumerable<ttm3._0.Models.tbLopHocKichBan>
 
 @{
     ViewBag.Title = "Danh sách kịch bản trong lớp";
 }
 
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <h3>@ViewBag.Title</h3>
-        <p>
-            @Html.ActionLink("Thêm kịch bản vào lớp", "KichBanAdd", new { IdLopHoc = ViewBag.IdLopHoc }, new { @class = "btn btn-success" }) |
-            @Html.ActionLink("Cài đặt lại tất cả các máy", "CaiDatMay", new { IdLopHoc = ViewBag.IdLopHoc }, new { @class = "btn btn-success" }) |
-            @Html.ActionLink("Bật tất cả các máy", "BatMay", new { IdLopHoc = ViewBag.IdLopHoc }, new { @class = "btn btn-success" }) |
-            @Html.ActionLink("Tất tất cả các máy", "TatMay", new { IdLopHoc = ViewBag.IdLopHoc }, new { @class = "btn btn-success" })
-        </p>
-        <p>@ViewBag.Loi</p>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="display table table-bordered" id="table_tbHocVien">
-                <thead>
-                    <th style="width:30px;">
-                        TT
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.tbKichBan.TenKichBan)
-                    </th>
-                    <th>
+<link href="~/Content/lophoc.css" rel="stylesheet" />
 
-                    </th>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+<style>
+    .lh-kb-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .lh-kb-toolbar .lh-btn { flex-shrink: 0; }
+    .lh-kb-err { padding: 8px 12px; border-radius: 10px; background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; font-size: 0.9rem; margin-bottom: 1rem; }
+    .lh-body .dataTables_wrapper { font-size: 0.9rem; }
+    .lh-body .dataTables_length, .lh-body .dataTables_filter { margin-bottom: 0.75rem; }
+    .lh-body .dataTables_filter input { padding: 8px 12px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin-left: 6px; }
+    .lh-body .dataTables_filter input:focus { outline: none; border-color: var(--accent-cyan, #00a8ff); box-shadow: 0 0 0 2px rgba(0, 168, 255, 0.15); }
+    .lh-body .dataTables_length select { padding: 6px 28px 6px 10px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin: 0 6px; }
+    .lh-body .dataTables_info { color: var(--text-light, #6b7280); }
+    .lh-body .dataTables_paginate { padding-top: 1rem; }
+    .lh-body .dataTables_paginate .paginate_button { padding: 6px 12px !important; margin: 0 2px !important; border-radius: 8px !important; border: 1px solid var(--sidebar-border, #e5e7eb) !important; background: var(--primary-white, #fff) !important; color: var(--text-secondary, #4a5568) !important; }
+    .lh-body .dataTables_paginate .paginate_button:hover { background: rgba(0, 168, 255, 0.1) !important; border-color: var(--accent-cyan, #00a8ff) !important; color: var(--primary-blue, #0066ff) !important; }
+    .lh-body .dataTables_paginate .paginate_button.current { background: linear-gradient(135deg, var(--accent-cyan, #00a8ff), var(--primary-blue, #0066ff)) !important; border-color: transparent !important; color: #fff !important; }
+    .lh-table .lh-col-actions { white-space: nowrap; }
+</style>
+
+<div class="lh-page">
+    <div class="lh-card">
+        <div class="lh-header">
+            <div class="lh-header-left">
+                <div class="lh-icon"><i class="fas fa-list-alt"></i></div>
+                <div>
+                    <h1 class="lh-title">@ViewBag.Title</h1>
+                    <p class="lh-subtitle">Quản lý kịch bản thực hành và điều khiển máy theo kịch bản.</p>
+                </div>
+            </div>
+            <div>
+                <a href="@Url.Action("HocVien", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+            </div>
+        </div>
+        <div class="lh-body">
+            <div class="lh-kb-toolbar">
+                <a href="@Url.Action("KichBanAdd", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-primary"><i class="fas fa-plus"></i> Thêm kịch bản</a>
+                <a href="@Url.Action("CaiDatMay", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-secondary"><i class="fas fa-sync-alt"></i> Cài đặt lại tất cả máy</a>
+                <a href="@Url.Action("BatMay", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-secondary"><i class="fas fa-play"></i> Bật tất cả máy</a>
+                <a href="@Url.Action("TatMay", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-secondary"><i class="fas fa-stop"></i> Tắt tất cả máy</a>
+            </div>
+            @if (ViewBag.Loi != null)
+            {
+                <div class="lh-kb-err">@ViewBag.Loi</div>
+            }
+            <div class="table-responsive lh-table-wrap">
+                <table class="lh-table display table table-bordered" id="table_tbHocVien">
+                    <thead>
                         <tr>
-                            <td>
-
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.tbKichBan.TenKichBan)
-                            </td>
-                            <td>
-                                @{
-                                    string linkDelete = @"/tbLopHocs/KichBanDelete/?IdLopHocKichBan=" + item.IdLopHocKichBan.ToString();
-                                    string linkReset = @"/tbLopHocs/CaiDatMayLe/?IdKichBan=" + item.IdKichBan.ToString()+"&IdLopHoc="+item.IdLopHoc.ToString();
-                                    string linkStart = @"/tbLopHocs/BatMayLe/?IdKichBan=" + item.IdKichBan.ToString() + "&IdLopHoc=" + item.IdLopHoc.ToString();
-                                    string linkStop = @"/tbLopHocs/TatMayLe/?IdKichBan=" + item.IdKichBan.ToString() + "&IdLopHoc=" + item.IdLopHoc.ToString();
-                                }
-                                <a href=@linkDelete title="Xóa"><span class="glyphicon glyphicon-trash"></span></a>
-                                <a href=@linkReset title="Cài đặt lại máy"><span class="glyphicon glyphicon-refresh"></span></a>
-                                <a href=@linkStart title="Bật máy"><span class="glyphicon glyphicon-play"></span></a>
-                                <a href=@linkStop title="Tắt máy"><span class="glyphicon glyphicon-stop"></span></a>
-                            </td>
+                            <th class="lh-col-tt" style="width:40px;">TT</th>
+                            <th>@Html.DisplayNameFor(model => model.tbKichBan.TenKichBan)</th>
+                            <th class="lh-col-actions" style="min-width:160px;">Thao tác</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var linkDelete = Url.Action("KichBanDelete", "tbLopHocs", new { IdLopHocKichBan = item.IdLopHocKichBan });
+                            var linkReset = Url.Action("CaiDatMayLe", "tbLopHocs", new { IdKichBan = item.IdKichBan, IdLopHoc = item.IdLopHoc });
+                            var linkStart = Url.Action("BatMayLe", "tbLopHocs", new { IdKichBan = item.IdKichBan, IdLopHoc = item.IdLopHoc });
+                            var linkStop = Url.Action("TatMayLe", "tbLopHocs", new { IdKichBan = item.IdKichBan, IdLopHoc = item.IdLopHoc });
+                            <tr>
+                                <td class="lh-col-tt"></td>
+                                <td>@Html.DisplayFor(m => item.tbKichBan.TenKichBan)</td>
+                                <td class="lh-col-actions">
+                                    <div class="lh-actions-inline">
+                                        <a href="@linkDelete" class="lh-act lh-act-del" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                        <a href="@linkReset" class="lh-act" title="Cài đặt lại máy"><i class="fas fa-sync-alt"></i></a>
+                                        <a href="@linkStart" class="lh-act" title="Bật máy"><i class="fas fa-play"></i></a>
+                                        <a href="@linkStop" class="lh-act" title="Tắt máy"><i class="fas fa-stop"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/datatables.min.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $(document).ready(function () {
+        $(function () {
             var t = $('#table_tbHocVien').DataTable({
-                "pageLength": 50,
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [[1, 'asc']]
+                pageLength: 50,
+                columnDefs: [{ searchable: false, orderable: false, targets: 0 }, { orderable: false, targets: -1 }],
+                order: [[1, 'asc']],
+                language: { search: 'Tìm kiếm:', lengthMenu: 'Hiển thị _MENU_ dòng', info: 'Đang xem _START_–_END_ / _TOTAL_ dòng', infoEmpty: 'Không có dữ liệu', infoFiltered: '(lọc từ _MAX_ dòng)', zeroRecords: 'Không tìm thấy kết quả', paginate: { first: 'Đầu', last: 'Cuối', next: 'Sau', previous: 'Trước' } }
             });
-
             t.on('order.dt search.dt', function () {
-                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) { cell.innerHTML = i + 1; });
             }).draw();
-        })
+        });
     </script>
 }

@@ -1,4 +1,4 @@
-﻿@model ttm3._0.Models.tbSoDoMang
+@model ttm3._0.Models.tbSoDoMang
 
 @{
     ViewBag.Title = "Xóa sơ đồ mạng";
@@ -6,40 +6,39 @@
 }
 
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <h3>@ViewBag.Title</h3>
-        <h3>Bạn có chắc chắn muốn xóa?</h3>
-    </div>
-    <div class="card-body">
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Ten)
-            </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Ten)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.UUID)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.UUID)
-            </dd>
-
-        </dl>
-    </div>
-    <div class="card-footer">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-actions no-color">
-                <input type="submit" value="Xóa" class="btn btn-primary" /> |
-                @Html.ActionLink("Quay lại", "Index")
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-project-diagram"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Bạn có chắc chắn muốn xóa?</p>
+                </div>
             </div>
-        }
+        </div>
+        <div class="ttm-body">
+            <dl class="dl-horizontal">
+                <dt>@Html.DisplayNameFor(model => model.Ten)</dt>
+                <dd>@Html.DisplayFor(model => model.Ten)</dd>
+                <dt>@Html.DisplayNameFor(model => model.UUID)</dt>
+                <dd>@Html.DisplayFor(model => model.UUID)</dd>
+            </dl>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-actions no-color" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+                    <button type="submit" class="ttm-btn ttm-btn-primary" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>Xóa</span>
+                    </button>
+                    <a href="@Url.Action("Index", "tbSoDoMangs")" class="ttm-btn ttm-btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Quay lại</span>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
 </div>

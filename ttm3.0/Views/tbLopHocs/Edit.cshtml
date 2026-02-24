@@ -1,60 +1,55 @@
-﻿@model ttm3._0.Models.tbLopHoc
+@model ttm3._0.Models.tbLopHoc
 
 @{
     ViewBag.Title = "Chỉnh sửa lớp học";
 }
 
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-<div class="card shadow mb-4">
-    <div class="card-header">
-        <h3>@ViewBag.Title</h3>
-    </div>
-    <div class="card-body">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+<link href="~/Content/lophoc.css" rel="stylesheet" />
 
-        <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.IdLopHoc)
-            @Html.HiddenFor(model => model.NguoiTao)
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.LopHoc, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LopHoc, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.LopHoc, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ThongTin, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ThongTin, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ThongTin, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.IdProjectOS, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("IdProjectOS", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.IdProjectOS, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Lưu" class="btn btn-primary" />
+<div class="lh-page">
+    <div class="lh-card">
+        <div class="lh-header">
+            <div class="lh-header-left">
+                <div class="lh-icon"><i class="fas fa-edit"></i></div>
+                <div>
+                    <h1 class="lh-title">@ViewBag.Title</h1>
+                    <p class="lh-subtitle">Cập nhật thông tin lớp học và phòng Lab.</p>
                 </div>
             </div>
         </div>
-        }
-    </div>
-    <div class="card-footer">
-        @Html.ActionLink("Quay lại", "Index")
+        <div class="lh-body">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "lh-form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+                @Html.HiddenFor(model => model.IdLopHoc)
+                @Html.HiddenFor(model => model.NguoiTao)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LopHoc)
+                    @Html.EditorFor(model => model.LopHoc, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LopHoc, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ThongTin)
+                    @Html.EditorFor(model => model.ThongTin, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ThongTin, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdProjectOS)
+                    @Html.DropDownList("IdProjectOS", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IdProjectOS, "", new { @class = "field-validation-error" })
+                </div>
+                <div class="lh-actions">
+                    <button type="submit" class="lh-btn lh-btn-primary"><i class="fas fa-save"></i> Lưu</button>
+                    <a href="@Url.Action("Index")" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                </div>
+            }
+        </div>
     </div>
 </div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
