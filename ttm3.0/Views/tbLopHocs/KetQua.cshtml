@@ -6,45 +6,30 @@
 }
 
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
-<link href="~/Content/lophoc.css" rel="stylesheet" />
 
-<style>
-    .lh-body .dataTables_wrapper { font-size: 0.9rem; }
-    .lh-body .dataTables_length, .lh-body .dataTables_filter { margin-bottom: 0.75rem; }
-    .lh-body .dataTables_filter input { padding: 8px 12px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin-left: 6px; }
-    .lh-body .dataTables_filter input:focus { outline: none; border-color: var(--accent-cyan, #00a8ff); box-shadow: 0 0 0 2px rgba(0, 168, 255, 0.15); }
-    .lh-body .dataTables_length select { padding: 6px 28px 6px 10px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin: 0 6px; }
-    .lh-body .dataTables_info { color: var(--text-light, #6b7280); }
-    .lh-body .dataTables_paginate { padding-top: 1rem; }
-    .lh-body .dataTables_paginate .paginate_button { padding: 6px 12px !important; margin: 0 2px !important; border-radius: 8px !important; border: 1px solid var(--sidebar-border, #e5e7eb) !important; background: var(--primary-white, #fff) !important; color: var(--text-secondary, #4a5568) !important; }
-    .lh-body .dataTables_paginate .paginate_button:hover { background: rgba(0, 168, 255, 0.1) !important; border-color: var(--accent-cyan, #00a8ff) !important; color: var(--primary-blue, #0066ff) !important; }
-    .lh-body .dataTables_paginate .paginate_button.current { background: linear-gradient(135deg, var(--accent-cyan, #00a8ff), var(--primary-blue, #0066ff)) !important; border-color: transparent !important; color: #fff !important; }
-    .lh-table .lh-col-tt { width: 40px; }
-</style>
-
-<div class="lh-page">
-    <div class="lh-card">
-        <div class="lh-header">
-            <div class="lh-header-left">
-                <div class="lh-icon"><i class="fas fa-chart-bar"></i></div>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-chart-bar"></i></div>
                 <div>
-                    <h1 class="lh-title">@ViewBag.Title</h1>
-                    <p class="lh-subtitle">Xem và chỉnh sửa điểm theo kịch bản. Click vào ô điểm để sửa.</p>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Xem và chỉnh sửa điểm theo kịch bản. Click vào ô điểm để sửa.</p>
                 </div>
             </div>
             <div>
                 @if (idLop.HasValue)
                 {
-                    <a href="@Url.Action("HocVien", "tbLopHocs", new { IdLopHoc = idLop })" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                    <a href="@Url.Action("HocVien", "tbLopHocs", new { IdLopHoc = idLop })" class="ttm-btn ttm-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
                 }
             </div>
         </div>
-        <div class="lh-body">
-            <div class="table-responsive lh-table-wrap">
-                <table class="lh-table display table table-bordered" id="table_tbHocVien">
+        <div class="ttm-body">
+            <div class="table-responsive ttm-table-wrap">
+                <table class="ttm-table display table table-bordered" id="table_tbHocVien">
                     <thead>
                         <tr>
-                            <th class="lh-col-tt">TT</th>
+                            <th class="ttm-col-tt">TT</th>
                             <th>Sinh viên</th>
                             @foreach (var kb in ViewBag.LstKB)
                             {
@@ -58,7 +43,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td class="lh-col-tt"></td>
+                                <td class="ttm-col-tt"></td>
                                 <td>@(item.User?.UserName)</td>
                                 @foreach (var kq in item.lsKQ)
                                 {
@@ -70,7 +55,7 @@
                                         }
                                         else
                                         {
-                                            <a href="@kq.UrlFileDapAn" class="lh-link" target="_blank">File đáp án</a>
+                                            <a href="@kq.UrlFileDapAn" class="ttm-link" target="_blank">File đáp án</a>
                                         }
                                     </td>
                                 }
@@ -83,11 +68,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    .lh-link { color: var(--accent-cyan, #00a8ff); text-decoration: none; }
-    .lh-link:hover { text-decoration: underline; }
-</style>
 
 @section Scripts {
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>

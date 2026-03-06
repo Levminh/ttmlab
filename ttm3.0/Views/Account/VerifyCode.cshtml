@@ -1,37 +1,54 @@
-﻿@model ttm3._0.Models.VerifyCodeViewModel
+@model ttm3._0.Models.VerifyCodeViewModel
 @{
-    ViewBag.Title = "Verify";
+    ViewBag.Title = "Xác thực mã";
 }
 
-<h2>@ViewBag.Title.</h2>
-
-@using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
-    @Html.AntiForgeryToken()
-    @Html.Hidden("provider", @Model.Provider)
-    @Html.Hidden("rememberMe", @Model.RememberMe)
-    <h4>Enter verification code</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <div class="checkbox">
-                @Html.CheckBoxFor(m => m.RememberBrowser)
-                @Html.LabelFor(m => m.RememberBrowser)
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-shield-alt"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Nhập mã xác thực hai yếu tố.</p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-primary" value="Submit" />
+        <div class="ttm-body">
+            @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "ttm-form", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("provider", Model.Provider)
+                @Html.Hidden("rememberMe", Model.RememberMe)
+                @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Code)
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Mã xác thực" })
+                    @Html.ValidationMessageFor(m => m.Code)
+                </div>
+
+                <div class="form-group">
+                    <label class="ttm-checkbox-label">
+                        @Html.CheckBoxFor(m => m.RememberBrowser)
+                        @Html.DisplayNameFor(m => m.RememberBrowser)
+                    </label>
+                </div>
+
+                <div class="ttm-form-actions">
+                    <button type="submit" class="ttm-btn ttm-btn-primary">
+                        <i class="fas fa-check"></i>
+                        <span>Xác thực</span>
+                    </button>
+                </div>
+            }
         </div>
     </div>
-}
+</div>
+
+<style>
+    .ttm-checkbox-label { font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

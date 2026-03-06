@@ -1,8 +1,43 @@
-﻿@{
-    ViewBag.Title = "Login Failure";
+@{
+    ViewBag.Title = "Đăng nhập thất bại";
 }
 
-<hgroup>
-    <h2>@ViewBag.Title.</h2>
-    <h3 class="text-danger">Unsuccessful login with service.</h3>
-</hgroup>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-times-circle"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Đăng nhập bằng dịch vụ bên ngoài không thành công.</p>
+                </div>
+            </div>
+        </div>
+        <div class="ttm-body">
+            <p class="ttm-error-msg">
+                <i class="fas fa-exclamation-circle"></i>
+                Không thể xác thực qua dịch vụ bên ngoài. Vui lòng thử lại hoặc đăng nhập bằng tài khoản thường.
+            </p>
+            <a href="@Url.Action("Login", "Account")" class="ttm-btn ttm-btn-secondary">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Đăng nhập</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ttm-error-msg {
+        padding: 12px 16px;
+        border-radius: 8px;
+        background: rgba(248, 113, 113, 0.1);
+        border: 1px solid rgba(248, 113, 113, 0.3);
+        color: #fca5a5;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+    .ttm-error-msg i { color: #f87171; }
+</style>

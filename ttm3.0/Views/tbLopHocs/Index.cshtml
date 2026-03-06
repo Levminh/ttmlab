@@ -6,178 +6,29 @@
 
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
 
-<style>
-    .lh-page { padding: 1.5rem 0 3rem; }
-    .lh-card {
-        background: var(--primary-white, #fff);
-        border-radius: 16px;
-        box-shadow: var(--shadow-soft, 0 2px 10px rgba(0,0,0,.08));
-        border: 1px solid var(--sidebar-border, #e5e7eb);
-        overflow: hidden;
-        animation: lhFadeIn 0.35s ease;
-    }
-    @@keyframes lhFadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .lh-header {
-        padding: 1.25rem 1.5rem;
-        background: linear-gradient(135deg, rgba(0, 168, 255, 0.08) 0%, rgba(0, 102, 255, 0.06) 100%);
-        border-bottom: 1px solid var(--sidebar-border, #e5e7eb);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    .lh-header-left { display: flex; align-items: center; gap: 1rem; }
-    .lh-icon {
-        width: 44px; height: 44px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--accent-cyan, #00a8ff), var(--primary-blue, #0066ff));
-        display: flex; align-items: center; justify-content: center;
-        color: #fff; font-size: 1.15rem;
-        box-shadow: 0 4px 12px rgba(0, 168, 255, 0.3);
-    }
-    .lh-title { font-size: 1.2rem; font-weight: 700; color: var(--text-primary, #1a1a1a); margin: 0; }
-    .lh-subtitle { font-size: 0.85rem; color: var(--text-light, #6b7280); margin: 0.2rem 0 0; }
-    .lh-btn-add {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 10px 18px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #fff;
-        background: linear-gradient(135deg, var(--accent-cyan, #00a8ff), var(--primary-blue, #0066ff));
-        border: none;
-        border-radius: 10px;
-        text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 4px 12px rgba(0, 168, 255, 0.3);
-    }
-    .lh-btn-add:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 168, 255, 0.4); }
-    .lh-body { padding: 1.5rem; }
-    .lh-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--sidebar-border, #e5e7eb); }
-    .lh-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.9rem;
-    }
-    .lh-table thead {
-        background: linear-gradient(180deg, var(--primary-light, #f8f9fa) 0%, #eef1f4 100%);
-        border-bottom: 2px solid var(--sidebar-border, #e5e7eb);
-    }
-    .lh-table thead th {
-        padding: 12px 14px;
-        text-align: left;
-        font-weight: 600;
-        color: var(--text-secondary, #4a5568);
-        white-space: nowrap;
-    }
-    .lh-table thead th:first-child { border-radius: 12px 0 0 0; }
-    .lh-table thead th:last-child { border-radius: 0 12px 0 0; }
-    .lh-table tbody tr {
-        transition: background 0.15s;
-        border-bottom: 1px solid var(--sidebar-border, #e5e7eb);
-    }
-    .lh-table tbody tr:last-child { border-bottom: none; }
-    .lh-table tbody tr:hover { background: rgba(0, 168, 255, 0.05); }
-    .lh-table tbody td {
-        padding: 12px 14px;
-        color: var(--text-primary, #1a1a1a);
-        vertical-align: middle;
-    }
-    .lh-table .lh-col-tt { width: 40px; text-align: center; color: var(--text-light, #6b7280); font-weight: 500; }
-    .lh-table .lh-col-actions { white-space: nowrap; }
-    .lh-actions {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        flex-wrap: wrap;
-    }
-    .lh-act {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px; height: 32px;
-        border-radius: 8px;
-        color: var(--text-secondary, #4a5568);
-        text-decoration: none;
-        transition: color 0.2s, background 0.2s;
-    }
-    .lh-act:hover { color: var(--primary-blue, #0066ff); background: rgba(0, 168, 255, 0.1); }
-    .lh-act.lh-act-del:hover { color: #dc2626; background: #fef2f2; }
-    .lh-act i { font-size: 0.9rem; }
-    /* DataTables overrides */
-    .lh-body .dataTables_wrapper { font-size: 0.9rem; padding-top: 0.5rem; }
-    .lh-body .dataTables_length,
-    .lh-body .dataTables_filter { margin-bottom: 0.75rem; }
-    .lh-body .dataTables_filter input {
-        padding: 8px 12px;
-        border: 1px solid var(--sidebar-border, #e5e7eb);
-        border-radius: 8px;
-        margin-left: 6px;
-    }
-    .lh-body .dataTables_filter input:focus {
-        outline: none;
-        border-color: var(--accent-cyan, #00a8ff);
-        box-shadow: 0 0 0 2px rgba(0, 168, 255, 0.15);
-    }
-    .lh-body .dataTables_length select {
-        padding: 6px 28px 6px 10px;
-        border: 1px solid var(--sidebar-border, #e5e7eb);
-        border-radius: 8px;
-        margin: 0 6px;
-    }
-    .lh-body .dataTables_info { color: var(--text-light, #6b7280); }
-    .lh-body .dataTables_paginate {
-        padding-top: 1rem;
-    }
-    .lh-body .dataTables_paginate .paginate_button {
-        padding: 6px 12px !important;
-        margin: 0 2px !important;
-        border-radius: 8px !important;
-        border: 1px solid var(--sidebar-border, #e5e7eb) !important;
-        background: var(--primary-white, #fff) !important;
-        color: var(--text-secondary, #4a5568) !important;
-    }
-    .lh-body .dataTables_paginate .paginate_button:hover {
-        background: rgba(0, 168, 255, 0.1) !important;
-        border-color: var(--accent-cyan, #00a8ff) !important;
-        color: var(--primary-blue, #0066ff) !important;
-    }
-    .lh-body .dataTables_paginate .paginate_button.current {
-        background: linear-gradient(135deg, var(--accent-cyan, #00a8ff), var(--primary-blue, #0066ff)) !important;
-        border-color: transparent !important;
-        color: #fff !important;
-    }
-    .lh-body .dataTables_paginate .paginate_button.disabled { opacity: 0.5; cursor: default !important; }
-</style>
-
-<div class="lh-page">
-    <div class="lh-card">
-        <div class="lh-header">
-            <div class="lh-header-left">
-                <div class="lh-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                 <div>
-                    <h1 class="lh-title">@ViewBag.Title</h1>
-                    <p class="lh-subtitle">Quản lý lớp học, học viên, kịch bản và kết quả thực hành.</p>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Quản lý lớp học, học viên, kịch bản và kết quả thực hành.</p>
                 </div>
             </div>
             <div>
-                <a href="@Url.Action("Create", "tbLopHocs")" class="lh-btn-add">
+                <a href="@Url.Action("Create", "tbLopHocs")" class="ttm-btn ttm-btn-add">
                     <i class="fas fa-plus"></i>
                     <span>Thêm mới lớp học</span>
                 </a>
             </div>
         </div>
-        <div class="lh-body">
-            <div class="table-responsive lh-table-wrap">
-                <table class="lh-table display table table-bordered" id="table_tbLopHoc">
+        <div class="ttm-body">
+            <div class="table-responsive ttm-table-wrap">
+                <table class="ttm-table display table table-bordered" id="table_tbLopHoc">
                     <thead>
                         <tr>
-                            <th class="lh-col-tt" style="width:40px;">TT</th>
+                            <th class="ttm-col-tt" style="width:36px;">TT</th>
                             <th>@Html.DisplayNameFor(model => model.LopHoc)</th>
                             <th>Openstack Project</th>
                             <th>@Html.DisplayNameFor(model => model.ThongTin)</th>
@@ -187,7 +38,7 @@
                             {
                                 <th>@Html.DisplayNameFor(model => model.NguoiTao)</th>
                             }
-                            <th class="lh-col-actions" style="min-width:140px;">Thao tác</th>
+                            <th class="ttm-col-actions" style="min-width:130px;">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -200,7 +51,7 @@
                             var linkKichBan = Url.Action("KichBan", "tbLopHocs", new { IdLopHoc = item.IdLopHoc });
                             var linkGiamSat = Url.Action("vnc", "tbProjectOpenStacks", new { IdProject = item.IdProjectOS });
                             <tr>
-                                <td class="lh-col-tt"></td>
+                                <td class="ttm-col-tt"></td>
                                 <td>@Html.DisplayFor(modelItem => item.LopHoc)</td>
                                 <td>@(item.tbProjectOpenStack?.ProjectName)</td>
                                 <td>@Html.DisplayFor(modelItem => item.ThongTin)</td>
@@ -210,14 +61,14 @@
                                 {
                                     <td>@(item.AspNetUser?.Email)</td>
                                 }
-                                <td class="lh-col-actions">
-                                    <div class="lh-actions">
-                                        <a href="@linkEdit" class="lh-act" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
-                                        <a href="@linkDelete" class="lh-act lh-act-del" title="Xóa"><i class="fas fa-trash-alt"></i></a>
-                                        <a href="@linkHocVien" class="lh-act" title="Học viên"><i class="fas fa-users"></i></a>
-                                        <a href="@linkKichBan" class="lh-act" title="Kịch bản"><i class="fas fa-list-alt"></i></a>
-                                        <a href="@linkKetQua" class="lh-act" title="Kết quả"><i class="fas fa-chart-bar"></i></a>
-                                        <a href="@linkGiamSat" class="lh-act" title="Giám sát"><i class="fas fa-desktop"></i></a>
+                                <td class="ttm-col-actions">
+                                    <div class="ttm-actions">
+                                        <a href="@linkEdit" class="ttm-act" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                                        <a href="@linkDelete" class="ttm-act ttm-act-del" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                        <a href="@linkHocVien" class="ttm-act" title="Học viên"><i class="fas fa-users"></i></a>
+                                        <a href="@linkKichBan" class="ttm-act" title="Kịch bản"><i class="fas fa-list-alt"></i></a>
+                                        <a href="@linkKetQua" class="ttm-act" title="Kết quả"><i class="fas fa-chart-bar"></i></a>
+                                        <a href="@linkGiamSat" class="ttm-act" title="Giám sát"><i class="fas fa-desktop"></i></a>
                                     </div>
                                 </td>
                             </tr>

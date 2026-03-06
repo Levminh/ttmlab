@@ -5,58 +5,34 @@
 }
 
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
-<link href="~/Content/lophoc.css" rel="stylesheet" />
 
 <style>
-    .lh-hv-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-    .lh-hv-toolbar .lh-btn { flex-shrink: 0; }
-    .lh-dropdown { position: relative; display: inline-block; }
-    .lh-dropdown summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; }
-    .lh-dropdown summary::-webkit-details-marker { display: none; }
-    .lh-dropdown .lh-btn-drop { padding-right: 2rem; position: relative; }
-    .lh-dropdown .lh-btn-drop::after { content: '\f078'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; }
-    .lh-dropdown[open] .lh-btn-drop::after { transform: translateY(-50%) rotate(180deg); }
-    .lh-dropdown-menu { position: absolute; top: 100%; left: 0; margin-top: 4px; min-width: 220px; background: var(--primary-white, #fff); border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); z-index: 50; padding: 0.5rem; }
-    .lh-dropdown-menu a { display: block; padding: 8px 12px; border-radius: 8px; color: var(--text-primary, #1a1a1a); text-decoration: none; font-size: 0.9rem; transition: background .15s; }
-    .lh-dropdown-menu a:hover { background: rgba(0, 168, 255, 0.1); color: var(--primary-blue, #0066ff); }
-    .lh-dropdown-menu a i { width: 1.1em; margin-right: 0.5rem; opacity: 0.8; }
-    .lh-hv-note { font-size: 0.85rem; color: var(--text-light, #6b7280); }
-    .lh-body .dataTables_wrapper { font-size: 0.9rem; }
-    .lh-body .dataTables_length, .lh-body .dataTables_filter { margin-bottom: 0.75rem; }
-    .lh-body .dataTables_filter input { padding: 8px 12px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin-left: 6px; }
-    .lh-body .dataTables_filter input:focus { outline: none; border-color: var(--accent-cyan, #00a8ff); box-shadow: 0 0 0 2px rgba(0, 168, 255, 0.15); }
-    .lh-body .dataTables_length select { padding: 6px 28px 6px 10px; border: 1px solid var(--sidebar-border, #e5e7eb); border-radius: 8px; margin: 0 6px; }
-    .lh-body .dataTables_info { color: var(--text-light, #6b7280); }
-    .lh-body .dataTables_paginate { padding-top: 1rem; }
-    .lh-body .dataTables_paginate .paginate_button { padding: 6px 12px !important; margin: 0 2px !important; border-radius: 8px !important; border: 1px solid var(--sidebar-border, #e5e7eb) !important; background: var(--primary-white, #fff) !important; color: var(--text-secondary, #4a5568) !important; }
-    .lh-body .dataTables_paginate .paginate_button:hover { background: rgba(0, 168, 255, 0.1) !important; border-color: var(--accent-cyan, #00a8ff) !important; color: var(--primary-blue, #0066ff) !important; }
-    .lh-body .dataTables_paginate .paginate_button.current { background: linear-gradient(135deg, var(--accent-cyan, #00a8ff), var(--primary-blue, #0066ff)) !important; border-color: transparent !important; color: #fff !important; }
-    .lh-table .lh-col-actions { white-space: nowrap; }
+    .ttm-dropdown .ttm-btn-drop::after { font-family: 'Font Awesome 5 Free'; font-weight: 900; }
 </style>
 
-<div class="lh-page">
-    <div class="lh-card">
-        <div class="lh-header">
-            <div class="lh-header-left">
-                <div class="lh-icon"><i class="fas fa-users"></i></div>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-users"></i></div>
                 <div>
-                    <h1 class="lh-title">@ViewBag.Title</h1>
-                    <p class="lh-subtitle">Quản lý học viên, máy tính và điểm.</p>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Quản lý học viên, máy tính và điểm.</p>
                 </div>
             </div>
             <div>
-                <a href="@Url.Action("Index")" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                <a href="@Url.Action("Index")" class="ttm-btn ttm-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
             </div>
         </div>
-        <div class="lh-body">
-            <div class="lh-hv-toolbar">
-                <a href="@Url.Action("HocVienAdd", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-primary"><i class="fas fa-user-plus"></i> Thêm học viên</a>
-                <a href="@Url.Action("Create", "clTaiKhoans", new { IdLopHoc = ViewBag.IdLopHoc })" class="lh-btn lh-btn-secondary"><i class="fas fa-user-plus"></i> Tạo tài khoản học viên</a>
+        <div class="ttm-body">
+            <div class="ttm-toolbar">
+                <a href="@Url.Action("HocVienAdd", new { IdLopHoc = ViewBag.IdLopHoc })" class="ttm-btn ttm-btn-add"><i class="fas fa-user-plus"></i> Thêm học viên</a>
+                <a href="@Url.Action("Create", "clTaiKhoans", new { IdLopHoc = ViewBag.IdLopHoc })" class="ttm-btn ttm-btn-secondary"><i class="fas fa-user-plus"></i> Tạo tài khoản học viên</a>
                 @if (ViewBag.CoQuyen == true)
                 {
-                    <details class="lh-dropdown">
-                        <summary class="lh-btn lh-btn-primary lh-btn-drop">Thao tác máy tính sinh viên</summary>
-                        <div class="lh-dropdown-menu">
+                    <details class="ttm-dropdown">
+                        <summary class="ttm-btn ttm-btn-add ttm-btn-drop">Thao tác máy tính sinh viên</summary>
+                        <div class="ttm-dropdown-menu">
                             <a href="@Url.Action("StartAll", new { IdLopHoc = ViewBag.IdLopHoc })"><i class="fas fa-play"></i> Khởi động tất cả máy</a>
                             <a href="@Url.Action("StopAll", new { IdLopHoc = ViewBag.IdLopHoc })"><i class="fas fa-stop"></i> Tắt tất cả máy</a>
                             <a href="@Url.Action("VNC", new { IdLopHoc = ViewBag.IdLopHoc })"><i class="fas fa-desktop"></i> VNC</a>
@@ -64,20 +40,20 @@
                         </div>
                     </details>
                 }
-                <span class="lh-hv-note">* Mật khẩu reset: @@Abc123</span>
+                <span class="ttm-note">* Mật khẩu reset: @@Abc123</span>
             </div>
-            <div class="table-responsive lh-table-wrap">
-                <table class="lh-table display table table-bordered" id="table_tbHocVien">
+            <div class="table-responsive ttm-table-wrap">
+                <table class="ttm-table display table table-bordered" id="table_tbHocVien">
                     <thead>
                         <tr>
-                            <th class="lh-col-tt" style="width:40px;">TT</th>
+                            <th class="ttm-col-tt" style="width:36px;">TT</th>
                             <th>@Html.DisplayNameFor(model => model.AspNetUser.FullName)</th>
                             <th>Tài khoản</th>
                             <th>@Html.DisplayNameFor(model => model.TongDiem)</th>
                             <th>Computer</th>
                             <th>Status</th>
                             <th>@Html.DisplayNameFor(model => model.GhiChu)</th>
-                            <th class="lh-col-actions" style="min-width:140px;">Thao tác</th>
+                            <th class="ttm-col-actions" style="min-width:130px;">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,29 +63,29 @@
                             var linkStart = Url.Action("StartOrStop", "tbLopHocs", new { IdHocVienLopHoc = item.IdHocVienLopHoc });
                             var linkReset = Url.Action("ResetPassword", "tbLopHocs", new { IdHocVienLopHoc = item.IdHocVienLopHoc });
                             <tr>
-                                <td class="lh-col-tt"></td>
+                                <td class="ttm-col-tt"></td>
                                 <td>@(item.AspNetUser?.FullName)</td>
                                 <td>@(item.AspNetUser?.UserName)</td>
                                 <td>@Html.DisplayFor(m => item.TongDiem)</td>
                                 <td class="editable-select" id="@item.IdHocVienLopHoc">@(item.tbComputer?.Name)</td>
                                 <td>@(item.tbComputer?.Status)</td>
                                 <td class="editable" id="@item.IdHocVienLopHoc">@(item.GhiChu)</td>
-                                <td class="lh-col-actions">
-                                    <div class="lh-actions-inline">
-                                        <a href="@linkDelete" class="lh-act lh-act-del" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                <td class="ttm-col-actions">
+                                    <div class="ttm-actions">
+                                        <a href="@linkDelete" class="ttm-act ttm-act-del" title="Xóa"><i class="fas fa-trash-alt"></i></a>
                                         @if (item.tbComputer != null && ViewBag.CoQuyen == true)
                                         {
                                             if (item.tbComputer.Status == "ACTIVE")
                                             {
-                                                <a href="@linkStart" class="lh-act" title="Tắt máy"><i class="fas fa-stop"></i></a>
-                                                <a href="@(item.tbComputer.VncUri)" class="lh-act" title="VNC" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                                <a href="@linkStart" class="ttm-act" title="Tắt máy"><i class="fas fa-stop"></i></a>
+                                                <a href="@(item.tbComputer.VncUri)" class="ttm-act" title="VNC" target="_blank"><i class="fas fa-external-link-alt"></i></a>
                                             }
                                             else
                                             {
-                                                <a href="@linkStart" class="lh-act" title="Bật máy"><i class="fas fa-play"></i></a>
+                                                <a href="@linkStart" class="ttm-act" title="Bật máy"><i class="fas fa-play"></i></a>
                                             }
                                         }
-                                        <a href="@linkReset" class="lh-act" title="Đặt lại mật khẩu"><i class="fas fa-key"></i></a>
+                                        <a href="@linkReset" class="ttm-act" title="Đặt lại mật khẩu"><i class="fas fa-key"></i></a>
                                     </div>
                                 </td>
                             </tr>

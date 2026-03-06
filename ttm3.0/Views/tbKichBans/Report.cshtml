@@ -39,7 +39,7 @@
                             <tr>
                                 <td class="ttm-col-tt"></td>
                                 <td>@Html.DisplayFor(modelItem => item.tbKichBan.MaKichBan)</td>
-                                <td>@Html.DisplayFor(modelItem => item.tbKichBan.TenKichBan)</td>
+                                <td title="@(item.tbKichBan != null ? item.tbKichBan.TenKichBan : "")">@Html.DisplayFor(modelItem => item.tbKichBan.TenKichBan)</td>
                                 <td>@Html.DisplayFor(modelItem => item.DiemTB)</td>
                             </tr>
                         }

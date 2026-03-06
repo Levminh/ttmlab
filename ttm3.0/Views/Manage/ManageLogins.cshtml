@@ -1,70 +1,112 @@
-﻿@model ttm3._0.Models.ManageLoginsViewModel
+@model ttm3._0.Models.ManageLoginsViewModel
 @using Microsoft.Owin.Security
 @{
-    ViewBag.Title = "Manage your external logins";
+    ViewBag.Title = "Quản lý đăng nhập bên ngoài";
 }
 
-<h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
-@{
-    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
-    if (loginProviders.Count() == 0) {
-        <div>
-            <p>
-                There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
-                for details on setting up this ASP.NET application to support logging in via external services.
-            </p>
-        </div>
-    }
-    else
-    {
-        if (Model.CurrentLogins.Count > 0)
-        {
-            <h4>Registered Logins</h4>
-            <table class="table">
-                <tbody>
-                    @foreach (var account in Model.CurrentLogins)
-                    {
-                        <tr>
-                            <td>@account.LoginProvider</td>
-                            <td>
-                                @if (ViewBag.ShowRemoveButton)
-                                {
-                                    using (Html.BeginForm("RemoveLogin", "Manage"))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        <div>
-                                            @Html.Hidden("loginProvider", account.LoginProvider)
-                                            @Html.Hidden("providerKey", account.ProviderKey)
-                                            <input type="submit" class="btn btn-primary" value="Remove" title="Remove this @account.LoginProvider login from your account" />
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    @: &nbsp;
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        if (Model.OtherLogins.Count > 0)
-        {
-            using (Html.BeginForm("LinkLogin", "Manage"))
-            {
-                @Html.AntiForgeryToken()
-                <div id="socialLoginList">
-                <p>
-                    @foreach (AuthenticationDescription p in Model.OtherLogins)
-                    {
-                        <button type="submit" class="btn btn-primary" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
-                    }
-                </p>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-link"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Liên kết hoặc gỡ đăng nhập từ dịch vụ bên ngoài.</p>
                 </div>
+            </div>
+        </div>
+        <div class="ttm-body">
+            @if (!string.IsNullOrEmpty(ViewBag.StatusMessage as string))
+            {
+                <p class="ttm-status-msg">@ViewBag.StatusMessage</p>
             }
-        }
-    }
-}
+
+            @{
+                var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+                if (loginProviders.Count() == 0)
+                {
+                    <p class="ttm-status-msg ttm-status-warn">
+                        <i class="fas fa-info-circle"></i>
+                        Chưa cấu hình dịch vụ đăng nhập bên ngoài.
+                    </p>
+                }
+                else
+                {
+                    if (Model.CurrentLogins.Count > 0)
+                    {
+                        <h4 class="ttm-section-title"><i class="fas fa-list"></i> Đăng nhập đã liên kết</h4>
+                        <div class="ttm-table-wrap">
+                            <table class="ttm-table">
+                                <thead>
+                                    <tr>
+                                        <th>Dịch vụ</th>
+                                        <th style="width: 140px;">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var account in Model.CurrentLogins)
+                                    {
+                                        <tr>
+                                            <td>@account.LoginProvider</td>
+                                            <td>
+                                                @if (ViewBag.ShowRemoveButton)
+                                                {
+                                                    using (Html.BeginForm("RemoveLogin", "Manage"))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        @Html.Hidden("loginProvider", account.LoginProvider)
+                                                        @Html.Hidden("providerKey", account.ProviderKey)
+                                                        <button type="submit" class="ttm-btn ttm-btn-secondary" title="Gỡ đăng nhập @account.LoginProvider">
+                                                            <i class="fas fa-unlink"></i>
+                                                            <span>Gỡ</span>
+                                                        </button>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="ttm-text-dim">—</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    if (Model.OtherLogins.Count > 0)
+                    {
+                        <h4 class="ttm-section-title"><i class="fas fa-plus-circle"></i> Thêm đăng nhập</h4>
+                        using (Html.BeginForm("LinkLogin", "Manage"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="ttm-form-actions" style="flex-wrap: wrap; gap: 8px;">
+                                @foreach (AuthenticationDescription p in Model.OtherLogins)
+                                {
+                                    <button type="submit" class="ttm-btn ttm-btn-primary" name="provider" value="@p.AuthenticationType" title="Đăng nhập bằng @p.Caption">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        <span>@p.AuthenticationType</span>
+                                    </button>
+                                }
+                            </div>
+                        }
+                    }
+                }
+            }
+
+            <div class="ttm-form-actions" style="margin-top: 1.5rem;">
+                <a href="@Url.Action("Index", "Manage")" class="ttm-btn ttm-btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quay lại cài đặt</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ttm-section-title { font-size: 0.95rem; margin: 1rem 0 0.5rem; color: var(--text-bright); display: flex; align-items: center; gap: 8px; }
+    .ttm-section-title i { color: var(--cyan); }
+    .ttm-status-msg { padding: 10px 14px; border-radius: 8px; background: rgba(74, 222, 128, 0.12); border: 1px solid rgba(74, 222, 128, 0.3); color: #86efac; font-size: 0.9rem; margin-bottom: 1rem; }
+    .ttm-status-warn { background: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.3); color: #fde047; }
+    .ttm-text-dim { color: var(--text-dim); }
+</style>

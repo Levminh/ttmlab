@@ -6,27 +6,20 @@
 }
 
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-<link href="~/Content/lophoc.css" rel="stylesheet" />
 
-<style>
-    .lh-form .pw-input-wrap { position: relative; }
-    .lh-form .pw-input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light, #6b7280); font-size: 0.95rem; pointer-events: none; }
-    .lh-form .pw-input-wrap input { padding-left: 42px; }
-</style>
-
-<div class="lh-page">
-    <div class="lh-card">
-        <div class="lh-header">
-            <div class="lh-header-left">
-                <div class="lh-icon"><i class="fas fa-user-plus"></i></div>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-user-plus"></i></div>
                 <div>
-                    <h1 class="lh-title">@ViewBag.Title</h1>
-                    <p class="lh-subtitle">Tạo hàng loạt tài khoản sinh viên theo tiếp đầu ngữ và số lượng. Mật khẩu mặc định áp dụng cho tất cả.</p>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Tạo hàng loạt tài khoản sinh viên theo tiếp đầu ngữ và số lượng. Mật khẩu mặc định áp dụng cho tất cả.</p>
                 </div>
             </div>
         </div>
-        <div class="lh-body">
-            @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "lh-form" }))
+        <div class="ttm-body">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "ttm-form" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
@@ -63,9 +56,9 @@
                     </div>
                     @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "field-validation-error" })
                 </div>
-                <div class="lh-actions">
-                    <button type="submit" class="lh-btn lh-btn-primary"><i class="fas fa-user-plus"></i> Tạo tài khoản</button>
-                    <a href="@Url.Action("HocVien", "tbLopHocs", new { IdLopHoc = idLop })" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                <div class="ttm-form-actions">
+                    <button type="submit" class="ttm-btn ttm-btn-add"><i class="fas fa-user-plus"></i> Tạo tài khoản</button>
+                    <a href="@Url.Action("HocVien", "tbLopHocs", new { IdLopHoc = idLop })" class="ttm-btn ttm-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
                 </div>
             }
         </div>

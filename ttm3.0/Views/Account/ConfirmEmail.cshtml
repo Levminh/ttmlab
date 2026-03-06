@@ -1,10 +1,36 @@
-﻿@{
-    ViewBag.Title = "Confirm Email";
+@{
+    ViewBag.Title = "Xác nhận email";
 }
 
-<h2>@ViewBag.Title.</h2>
-<div>
-    <p>
-        Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
-    </p>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon"><i class="fas fa-check-circle"></i></div>
+                <div>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Cảm ơn bạn đã xác nhận email.</p>
+                </div>
+            </div>
+        </div>
+        <div class="ttm-body">
+            <p class="ttm-status-msg">
+                <i class="fas fa-info-circle"></i>
+                Bạn có thể @Html.ActionLink("đăng nhập tại đây", "Login", "Account", null, new { @class = "ttm-link" }).
+            </p>
+        </div>
+    </div>
 </div>
+
+<style>
+    .ttm-status-msg {
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: rgba(74, 222, 128, 0.12);
+        border: 1px solid rgba(74, 222, 128, 0.3);
+        color: #86efac;
+        font-size: 0.9rem;
+    }
+    .ttm-link { color: var(--cyan); text-decoration: none; }
+    .ttm-link:hover { text-decoration: underline; }
+</style>

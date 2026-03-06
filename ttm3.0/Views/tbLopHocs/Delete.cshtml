@@ -5,42 +5,34 @@
 }
 
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-<link href="~/Content/lophoc.css" rel="stylesheet" />
 
-<div class="lh-page">
-    <div class="lh-card">
-        <div class="lh-header">
-            <div class="lh-header-left">
-                <div class="lh-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);"><i class="fas fa-trash-alt"></i></div>
+<div class="ttm-page">
+    <div class="ttm-card">
+        <div class="ttm-header">
+            <div class="ttm-header-left">
+                <div class="ttm-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);"><i class="fas fa-trash-alt"></i></div>
                 <div>
-                    <h1 class="lh-title">@ViewBag.Title</h1>
-                    <p class="lh-subtitle">Bạn có chắc chắn muốn xóa lớp học này? Thao tác không thể hoàn tác.</p>
+                    <h1 class="ttm-title">@ViewBag.Title</h1>
+                    <p class="ttm-subtitle">Bạn có chắc chắn muốn xóa lớp học này? Thao tác không thể hoàn tác.</p>
                 </div>
             </div>
         </div>
-        <div class="lh-body">
-            <dl class="lh-dl">
+        <div class="ttm-body">
+            <dl class="ttm-dl">
                 <dt>@Html.DisplayNameFor(model => model.LopHoc)</dt>
                 <dd>@Html.DisplayFor(model => model.LopHoc)</dd>
                 <dt>@Html.DisplayNameFor(model => model.ThongTin)</dt>
                 <dd>@Html.DisplayFor(model => model.ThongTin)</dd>
             </dl>
-            @using (Html.BeginForm("Delete", "tbLopHocs", FormMethod.Post, new { @class = "lh-form" }))
+            @using (Html.BeginForm("Delete", "tbLopHocs", FormMethod.Post, new { @class = "ttm-form" }))
             {
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="id" value="@Model.IdLopHoc" />
-                <div class="lh-actions">
-                    <button type="submit" class="lh-btn lh-btn-danger"><i class="fas fa-trash-alt"></i> Xóa</button>
-                    <a href="@Url.Action("Index")" class="lh-btn lh-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                <div class="ttm-form-actions">
+                    <button type="submit" class="ttm-btn ttm-btn-danger"><i class="fas fa-trash-alt"></i> Xóa</button>
+                    <a href="@Url.Action("Index")" class="ttm-btn ttm-btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
                 </div>
             }
         </div>
     </div>
 </div>
-
-<style>
-    .lh-dl { margin: 0; }
-    .lh-dl dt { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary, #4a5568); margin-top: 1rem; }
-    .lh-dl dt:first-child { margin-top: 0; }
-    .lh-dl dd { margin: 0.25rem 0 0; font-size: 1rem; color: var(--text-primary, #1a1a1a); }
-</style>

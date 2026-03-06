@@ -24,12 +24,12 @@
             </div>
         </div>
         <div class="ttm-body">
-            <div class="ttm-card" style="margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden;">
-                <div class="ttm-header" style="background: linear-gradient(135deg, rgba(0, 168, 255, 0.2), rgba(0, 102, 255, 0.15));">
-                    <h2 class="ttm-title" style="margin: 0;">THÔNG TIN CƠ BẢN</h2>
+            <div class="ttm-card ttm-subcard">
+                <div class="ttm-subcard-header ttm-subcard-header-info">
+                    <h2 class="ttm-title">THÔNG TIN CƠ BẢN</h2>
                 </div>
                 <div class="ttm-body">
-                    <p><a href="@ViewBag.VNC" class="ttm-btn ttm-btn-secondary" style="display: inline-flex;"><i class="fas fa-desktop"></i> Máy tính cho sinh viên sử dụng VNC</a></p>
+                    <p><a href="@ViewBag.VNC" class="ttm-btn ttm-btn-secondary ttm-btn-inline"><i class="fas fa-desktop"></i> Máy tính cho sinh viên sử dụng VNC</a></p>
                     @Html.Raw(ViewBag.GhiChu)
                 </div>
             </div>
@@ -37,25 +37,25 @@
             @foreach (var item in Model)
             {
                 var linksubmit = item.IdKieuDanhGia == 1 ? "/tbKetQuas/ctf/?IdKetQua=" + item.IdKetQua : "/tbKetQuas/UploadFiles/?IdKetQua=" + item.IdKetQua;
-                <div class="ttm-card" style="margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden;">
-                    <div class="ttm-header" style="background: linear-gradient(135deg, rgba(245, 222, 179, 0.4), rgba(255, 228, 181, 0.3));">
+                <div class="ttm-card ttm-subcard">
+                    <div class="ttm-subcard-header ttm-subcard-header-scenario">
                         <div class="ttm-header-left">
-                            <div class="ttm-icon" style="background: linear-gradient(135deg, #e8b923, #d4a017);"><i class="fas fa-file-code"></i></div>
+                            <div class="ttm-icon ttm-icon-amber"><i class="fas fa-file-code"></i></div>
                             <div>
-                                <h2 class="ttm-title" style="margin: 0;">Kịch bản: @item.TenKichBan</h2>
-                                <p class="ttm-subtitle" style="margin: 0.25rem 0 0;">Điểm đã đạt: @item.Diem</p>
-                                <p style="margin: 0.5rem 0 0;"><a href="@linksubmit" target="_blank" class="ttm-btn ttm-btn-add" style="display: inline-flex; font-size: 0.85rem;"><i class="fas fa-paper-plane"></i> Submit kết quả</a></p>
+                                <h2 class="ttm-title">Kịch bản: @item.TenKichBan</h2>
+                                <p class="ttm-subtitle">Điểm đã đạt: @item.Diem</p>
+                                <p class="ttm-subcard-action"><a href="@linksubmit" target="_blank" class="ttm-btn ttm-btn-add"><i class="fas fa-paper-plane"></i> Submit kết quả</a></p>
                             </div>
                         </div>
                     </div>
                     <div class="ttm-body">
-                        <h4 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.5rem;">MỤC TIÊU</h4>
+                        <h4 class="ttm-section-label">MỤC TIÊU</h4>
                         @Html.Raw(item.MucTieu)
-                        <hr style="margin: 1rem 0;" />
-                        <h4 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.5rem;">MÔ TẢ</h4>
+                        <hr class="ttm-hr" />
+                        <h4 class="ttm-section-label">MÔ TẢ</h4>
                         @Html.Raw(item.NoiDung)
-                        <hr style="margin: 1rem 0;" />
-                        <h4 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.5rem;">YÊU CẦU</h4>
+                        <hr class="ttm-hr" />
+                        <h4 class="ttm-section-label">YÊU CẦU</h4>
                         @Html.Raw(item.YeuCau)
                     </div>
                 </div>
@@ -63,6 +63,21 @@
         </div>
     </div>
 </div>
+
+<style>
+    .ttm-subcard { margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(56, 189, 248, 0.2); }
+    .ttm-subcard-header { padding: 12px 18px; }
+    .ttm-subcard-header-info { background: linear-gradient(135deg, rgba(8, 34, 64, 0.95), rgba(6, 22, 42, 0.95)); border-bottom: 1px solid rgba(56, 189, 248, 0.25); }
+    .ttm-subcard-header-info .ttm-title { margin: 0; font-size: 1rem; color: var(--text-bright); }
+    .ttm-subcard-header-scenario { background: linear-gradient(135deg, rgba(8, 34, 64, 0.9), rgba(4, 18, 36, 0.9)); border-bottom: 1px solid rgba(56, 189, 248, 0.2); }
+    .ttm-subcard-header-scenario .ttm-title { margin: 0; font-size: 1rem; }
+    .ttm-subcard-header-scenario .ttm-subtitle { margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-mid); }
+    .ttm-subcard-action { margin: 0.5rem 0 0; }
+    .ttm-icon-amber { background: linear-gradient(135deg, rgba(251, 191, 36, 0.35), rgba(245, 158, 11, 0.3)) !important; color: #fcd34d !important; }
+    .ttm-section-label { font-size: 0.95rem; color: var(--text-mid); margin-bottom: 0.5rem; }
+    .ttm-hr { margin: 1rem 0; border-color: rgba(56, 189, 248, 0.2); }
+    .ttm-btn-inline { display: inline-flex !important; }
+</style>
 
 @section Scripts {
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
