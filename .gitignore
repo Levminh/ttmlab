@@ -101,3 +101,5 @@ nCrunchTemp_*
 *.pidb
 *.svclog
 *.scc
+
+.fake
