@@ -1,0 +1,128 @@
+@{
+    ViewData["Title"] = "Thông tin chung oVnCr";
+}
+
+<style>
+    /* Tùy chỉnh CSS tạo cảm giác Không gian mạng (Cyber) */
+    /*em des bằng a.i*/
+    .cyber-hero {
+        background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
+        color: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .text-neon {
+        color: #00f5d4;
+        text-shadow: 0 0 5px rgba(0, 245, 212, 0.5);
+    }
+    .card-tech {
+        border: none;
+        border-left: 4px solid #3a506b;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        background-color: #f8f9fa;
+    }
+    .card-tech:hover {
+        transform: translateY(-5px);
+        border-left-color: #00f5d4;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .timeline {
+        border-left: 3px solid #3a506b;
+        padding-left: 25px;
+        margin-left: 15px;
+    }
+    .timeline-item {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -33px;
+        top: 5px;
+        width: 14px;
+        height: 14px;
+        background: #00f5d4;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #00f5d4;
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <div class="p-5 mb-5 rounded-4 cyber-hero">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">oVnCr <span class="text-neon">| Thao trường Mở</span></h1>
+                <p class="fs-4 fw-light">Bước nhảy vọt cho nhân lực an ninh mạng Việt Nam trong kỷ nguyên Chính phủ số.</p>
+                <hr class="my-4 border-light opacity-25">
+                <p class="lead">Nền tảng đào tạo, huấn luyện và diễn tập thực chiến giải quyết bài toán cốt lõi về khoảng trống nhân sự chất lượng cao.</p>
+                <a asp-action="Management" class="btn btn-outline-light btn-lg mt-3 px-4 rounded-pill">
+                    Tiến vào Thao trường 🚀
+                </a>
+            </div>
+            <div class="col-lg-4 text-center d-none d-lg-block">
+                <h1 style="font-size: 8rem;" class="text-neon">🛡️</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card card-tech h-100 p-4 shadow-sm rounded-4">
+                <h4 class="fw-bold text-dark">🎯 Tầm nhìn chiến lược</h4>
+                <p class="text-muted mt-2">Phát triển nền tảng số quốc gia, cụ thể hóa định hướng sản phẩm chiến lược, hướng tới mục tiêu đưa Việt Nam lọt <strong>Top 3 khu vực</strong> về an ninh mạng.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-tech h-100 p-4 shadow-sm rounded-4">
+                <h4 class="fw-bold text-dark">⚔️ Hybrid Cyber Range</h4>
+                <p class="text-muted mt-2">Mô hình thao trường hỗn hợp kết hợp vật lý và ảo hóa. Đưa học viên vào các hệ thống phức tạp, diễn tập tấn công/phòng thủ sát với thực tế nhất.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-tech h-100 p-4 shadow-sm rounded-4">
+                <h4 class="fw-bold text-dark">🇻🇳 Công nghệ thuần Việt</h4>
+                <p class="text-muted mt-2">Tích hợp giải pháp từ mạng lưới chuyên gia <strong>ViSecurity</strong>, khẳng định năng lực công nghệ Việt và khả năng kết nối xây dựng giải pháp mang tầm vóc quốc gia.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-5 align-items-center">
+        <div class="col-lg-5">
+            <div class="card shadow rounded-4 overflow-hidden border-0">
+                <div class="bg-primary p-4 text-center text-white">
+                    <h3 class="fw-bold mb-0">Kiến trúc sư trưởng</h3>
+                    <p class="mb-0 opacity-75">Dự án oVnCr</p>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    <h4 class="fw-bold text-center text-dark mb-4">TS. Trần Nghi Phú</h4>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent border-bottom px-0">
+                            <strong>🏆 2007:</strong> Giải 3 Lập trình viên Quốc tế ACM/ICPC Châu Á
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom px-0">
+                            <strong>🌟 2010:</strong> Giải thưởng Quả cầu vàng Công nghệ Thông tin
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom px-0">
+                            <strong>🎓 2024:</strong> Học sinh giỏi Quốc gia Tin học toàn quốc (Cố vấn)
+                        </li>
+                        <li class="list-group-item bg-transparent px-0 pb-0 pt-3">
+                            <strong>💼 Thành tựu:</strong> Chủ nhiệm 01 đề tài cấp Bộ, 02 đề tài cơ sở và tham gia 08 đề tài nghiên cứu trọng điểm khác.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <h3 class="fw-bold mb-4 border-bottom pb-2 text-dark">🗺️ Lộ trình & Mục tiêu (3-5 năm)</h3>
+            <div class="mt-4 text-center">
+                <img src="~/images/lotrinh.jpg" 
+                     alt="Lộ trình oVnCr" 
+                     class="img-fluid rounded-4 shadow-lg" 
+                     style="border: 2px solid #3a506b; transition: transform 0.3s ease;"
+                     onmouseover="this.style.transform='scale(1.02)'"
+                     onmouseout="this.style.transform='scale(1)'" />
+            </div>
+        </div>
+    </div>
+</div>
