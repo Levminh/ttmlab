@@ -1,52 +1,78 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LMS.Ovncr</title>
+    <title>@ViewData["Title"] — LMS OVNCR</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LMS.Ovncr.styles.css" asp-append-version="true" />
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        /* Navbar */
+        .navbar-brand { font-weight: 700; color: #1e40af !important; letter-spacing: -0.5px; }
+        .navbar-brand span { color: #3b82f6; }
+        .navbar { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LMS.Ovncr</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <!-- Logo -->
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    🛡️ LMS<span>.OVNCR</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <!-- Menu chính bên trái -->
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="OVNCR" asp-action="Management">Kịch bản</a>
                         </li>
                         <li class="nav-item">
+<<<<<<< HEAD
                                  <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="About" asp-action="">About</a>
                         </li>
                         <li class="nav-item">
                               <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="OVNCR" asp-action="Management">Kịch bản</a>
+=======
+                          <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="OVNCR" asp-action="Index">About</a>
+>>>>>>> 724efc0 (Hoàn thành đăng nhập và đăng ký tài khoản, QLTK thêm thanh tìm kiếm cho Admin dễ tìm kiếm tài khoản quản lý)
                         </li>
+                    </ul>
+
+                    <!-- Login Partial bên phải navbar -->
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        @await Html.PartialAsync("_LoginPartial")
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container-fluid px-4 py-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - LMS.Ovncr - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top mt-4 py-3 text-muted">
+        <div class="container-fluid px-4">
+            <small>&copy; 2026 LMS OVNCR — Hệ thống quản lý diễn tập an toàn thông tin</small>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

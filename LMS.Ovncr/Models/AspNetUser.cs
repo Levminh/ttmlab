@@ -1,49 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace LMS.Ovncr.Models;
 
-public partial class AspNetUser
+/// <summary>
+/// Người dùng của hệ thống. Kế thừa IdentityUser để tận dụng toàn bộ
+/// cơ chế xác thực của ASP.NET Core Identity (hash mật khẩu, lockout, claims...).
+/// </summary>
+public partial class AspNetUser : IdentityUser<string>
 {
-    public string Id { get; set; } = null!;
+    // IdentityUser<string> đã cung cấp sẵn: Id, UserName, Email, PasswordHash,
+    // PhoneNumber, SecurityStamp, LockoutEnabled, LockoutEnd, AccessFailedCount...
+    // Ta chỉ cần khai báo thêm các trường đặc thù của hệ thống.
+    // ta cần chủ động tự sinh Id cho record mới để EF Core track
+    public AspNetUser()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 
-    public string? Email { get; set; }
-
-    public bool EmailConfirmed { get; set; }
-
-    public string? PasswordHash { get; set; }
-
-    public string? SecurityStamp { get; set; }
-
-    public string? PhoneNumber { get; set; }
-
-    public bool PhoneNumberConfirmed { get; set; }
-
-    public bool TwoFactorEnabled { get; set; }
-
-    public DateTime? LockoutEndDateUtc { get; set; }
-
-    public bool LockoutEnabled { get; set; }
-
-    public int AccessFailedCount { get; set; }
-
-    public string UserName { get; set; } = null!;
-
+    /// <summary>Họ và tên đầy đủ của người dùng</summary>
     public string? FullName { get; set; }
 
-    public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; } = new List<AspNetUserClaim>();
+    // ========== Navigation Properties ==========
+    // Các mối quan hệ tới các bảng nghiệp vụ trong hệ thống
 
-    public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; } = new List<AspNetUserLogin>();
-
+    /// <summary>Danh sách lớp học mà học viên tham gia</summary>
     public virtual ICollection<TbHocVienLopHoc> TbHocVienLopHocs { get; set; } = new List<TbHocVienLopHoc>();
 
+    /// <summary>Danh sách kết quả diễn tập của học viên</summary>
     public virtual ICollection<TbKetQua> TbKetQuas { get; set; } = new List<TbKetQua>();
 
+    /// <summary>Danh sách kỳ thi do người dùng tạo</summary>
     public virtual ICollection<TbKyThi> TbKyThis { get; set; } = new List<TbKyThi>();
 
+    /// <summary>Danh sách lịch phòng lab liên quan đến người dùng</summary>
     public virtual ICollection<TbLichPhongLab> TbLichPhongLabs { get; set; } = new List<TbLichPhongLab>();
 
+    /// <summary>Danh sách lớp học mà người dùng tạo (với vai trò giảng viên)</summary>
     public virtual ICollection<TbLopHoc> TbLopHocs { get; set; } = new List<TbLopHoc>();
-
-    public virtual ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
 }

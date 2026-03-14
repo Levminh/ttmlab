@@ -1,13 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace LMS.Ovncr.Models;
 
-public partial class AspNetRole
+/// <summary>
+/// Vai trò (Role) trong hệ thống. Kế thừa IdentityRole để tương thích
+/// với cơ chế phân quyền của ASP.NET Core Identity.
+/// Các role mặc định: "Admin", "User".
+/// </summary>
+public partial class AspNetRole : IdentityRole<string>
 {
-    public string Id { get; set; } = null!;
+    // IdentityRole<string> đã cung cấp: Id, Name, NormalizedName, ConcurrencyStamp
+    // Không cần khai báo thêm trường nào ở đây, ngoại trừ constructor
+    // để gán giá trị mặc định cho Id để EF Core có thể track object mới.
+    public AspNetRole()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 
-    public string Name { get; set; } = null!;
-
-    public virtual ICollection<AspNetUser> Users { get; set; } = new List<AspNetUser>();
+    public AspNetRole(string roleName) : this()
+    {
+        Name = roleName;
+    }
 }

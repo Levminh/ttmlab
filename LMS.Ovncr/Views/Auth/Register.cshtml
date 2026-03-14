@@ -1,0 +1,151 @@
+@model LMS.Ovncr.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký — LMS OVNCR</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f3460 100%);
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem 0;
+        }
+        .register-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px; padding: 2.5rem;
+            width: 100%; max-width: 460px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+        .login-logo { text-align: center; margin-bottom: 2rem; }
+        .login-logo .badge-icon {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 16px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin-bottom: 1rem;
+            box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+        }
+        .login-logo h1 { color: #fff; font-size: 1.5rem; font-weight: 700; }
+        .login-logo p { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+        .form-label { color: rgba(255,255,255,0.8); font-size: 0.875rem; font-weight: 500; }
+        .form-control {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px; color: #fff; padding: 0.75rem 1rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            background: rgba(255,255,255,0.12);
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+            color: #fff;
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.3); }
+        .btn-register {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; padding: 0.75rem;
+            font-weight: 600; font-size: 0.95rem; color: #fff;
+            width: 100%; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,185,129,0.5);
+            color: #fff;
+        }
+        .link-login { color: #60a5fa; text-decoration: none; font-weight: 500; }
+        .link-login:hover { color: #93c5fd; }
+        .alert-danger {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #fca5a5; border-radius: 10px;
+        }
+        .divider { border-color: rgba(255,255,255,0.1); margin: 1.5rem 0; }
+        .login-text { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.875rem; }
+        .text-danger { font-size: 0.8rem; }
+        /* Password note */
+        .password-hint { color: rgba(255,255,255,0.35); font-size: 0.78rem; margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <!-- Logo & Tiêu đề -->
+        <div class="login-logo">
+            <div class="badge-icon">✨</div>
+            <h1>Tạo tài khoản</h1>
+            <p>Đăng ký để tham gia hệ thống LMS OVNCR</p>
+        </div>
+
+        <!-- Hiển thị lỗi tổng quát -->
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <!-- Form đăng ký -->
+        <form asp-action="Register" asp-controller="Auth" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label asp-for="UserName" class="form-label">Tên đăng nhập <span style="color:#ef4444">*</span></label>
+                <input asp-for="UserName" class="form-control" placeholder="Ví dụ: nguyenvana" autocomplete="username" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label">Họ và tên <span style="color:#ef4444">*</span></label>
+                <input asp-for="FullName" class="form-control" placeholder="Ví dụ: Nguyễn Văn A" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email <span style="color:rgba(255,255,255,0.4)">(tuỳ chọn)</span></label>
+                <input asp-for="Email" class="form-control" placeholder="example@gmail.com" autocomplete="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Mật khẩu <span style="color:#ef4444">*</span></label>
+                <input asp-for="Password" class="form-control" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" />
+                <div class="password-hint">Tối thiểu 6 ký tự</div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="ConfirmPassword" class="form-label">Xác nhận mật khẩu <span style="color:#ef4444">*</span></label>
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu" autocomplete="new-password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-register">Tạo tài khoản</button>
+        </form>
+
+        <hr class="divider" />
+
+        <p class="login-text">
+            Đã có tài khoản?
+            <a asp-action="Login" asp-controller="Auth" class="link-login">Đăng nhập</a>
+        </p>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

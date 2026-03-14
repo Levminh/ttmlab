@@ -1,0 +1,81 @@
+@model LMS.Ovncr.ViewModels.EditUserViewModel
+@{
+    ViewData["Title"] = "Chỉnh sửa tài khoản";
+}
+
+<div class="container py-3" style="max-width: 560px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark py-3">
+            <h5 class="mb-0">✏️ Chỉnh sửa: <strong>@Model.UserName</strong></h5>
+        </div>
+        <div class="card-body p-4">
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    { <div>@error.ErrorMessage</div> }
+                </div>
+            }
+
+            <form asp-action="EditUser" asp-controller="Admin" method="post">
+                @Html.AntiForgeryToken()
+                <!-- Truyền Id qua hidden field -->
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Tên đăng nhập: chỉ đọc -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Tên đăng nhập</label>
+                    <input type="text" class="form-control bg-light" value="@Model.UserName" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label fw-semibold">Họ và tên</label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label fw-semibold">Số điện thoại</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Role" class="form-label fw-semibold">Vai trò</label>
+                    <select asp-for="Role" class="form-select">
+                        @foreach (var role in Model.AvailableRoles)
+                        {
+                            <option value="@role">@role</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Đặt lại mật khẩu (tuỳ chọn) -->
+                <div class="mb-4">
+                    <label asp-for="NewPassword" class="form-label fw-semibold">
+                        Mật khẩu mới
+                        <small class="text-muted fw-normal">(để trống nếu không thay đổi)</small>
+                    </label>
+                    <input asp-for="NewPassword" class="form-control" placeholder="Nhập mật khẩu mới nếu muốn đổi" />
+                    <span asp-validation-for="NewPassword" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning fw-semibold px-4">💾 Lưu thay đổi</button>
+                    <a asp-action="Users" asp-controller="Admin" class="btn btn-outline-secondary px-4">← Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

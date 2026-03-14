@@ -1,0 +1,162 @@
+@model LMS.Ovncr.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = null; // Trang đăng nhập dùng layout riêng (full-screen)
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập — LMS OVNCR</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+
+        /* Nền gradient toàn màn hình */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f3460 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Card đăng nhập */
+        .login-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%; max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        /* Logo / Tiêu đề */
+        .login-logo {
+            text-align: center; margin-bottom: 2rem;
+        }
+        .login-logo .badge-icon {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 16px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin-bottom: 1rem;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.4);
+        }
+        .login-logo h1 { color: #fff; font-size: 1.5rem; font-weight: 700; }
+        .login-logo p { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+
+        /* Input */
+        .form-label { color: rgba(255,255,255,0.8); font-size: 0.875rem; font-weight: 500; }
+        .form-control {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px; color: #fff;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            background: rgba(255,255,255,0.12);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+            color: #fff;
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.3); }
+
+        /* Checkbox */
+        .form-check-label { color: rgba(255,255,255,0.6); font-size: 0.875rem; }
+        .form-check-input { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+
+        /* Nút đăng nhập */
+        .btn-login {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border: none; border-radius: 10px; padding: 0.75rem;
+            font-weight: 600; font-size: 0.95rem; color: #fff;
+            width: 100%; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59,130,246,0.5);
+            color: #fff;
+        }
+
+        /* Link */
+        .link-register { color: #60a5fa; text-decoration: none; font-weight: 500; }
+        .link-register:hover { color: #93c5fd; }
+
+        /* Thông báo lỗi */
+        .alert-danger {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #fca5a5; border-radius: 10px;
+        }
+
+        .divider { border-color: rgba(255,255,255,0.1); margin: 1.5rem 0; }
+        .register-text { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <!-- Logo & Tiêu đề -->
+        <div class="login-logo">
+            <div class="badge-icon">🛡️</div>
+            <h1>LMS OVNCR</h1>
+            <p>Hệ thống quản lý diễn tập an toàn thông tin</p>
+        </div>
+
+        <!-- Hiển thị lỗi validation chung -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" role="alert">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <!-- Form đăng nhập -->
+        <form asp-action="Login" asp-controller="Auth" method="post">
+            <!-- Truyền ReturnUrl qua hidden field -->
+            <input type="hidden" asp-for="ReturnUrl" />
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label asp-for="UserName" class="form-label">Tên đăng nhập</label>
+                <input asp-for="UserName" class="form-control" placeholder="Nhập tên đăng nhập" autocomplete="username" />
+                <span asp-validation-for="UserName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Mật khẩu</label>
+                <input asp-for="Password" class="form-control" placeholder="Nhập mật khẩu" autocomplete="current-password" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input" type="checkbox" />
+                    <label asp-for="RememberMe" class="form-check-label">Ghi nhớ đăng nhập</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login">Đăng nhập</button>
+        </form>
+
+        <hr class="divider" />
+
+        <!-- Link đăng ký -->
+        <p class="register-text">
+            Chưa có tài khoản?
+            <a asp-action="Register" asp-controller="Auth" class="link-register">Đăng ký ngay</a>
+        </p>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

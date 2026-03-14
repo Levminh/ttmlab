@@ -1,0 +1,70 @@
+@model LMS.Ovncr.ViewModels.CreateUserViewModel
+@{
+    ViewData["Title"] = "Tạo tài khoản mới";
+}
+
+<div class="container py-3" style="max-width: 560px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h5 class="mb-0">➕ Tạo tài khoản mới</h5>
+        </div>
+        <div class="card-body p-4">
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    { <div>@error.ErrorMessage</div> }
+                </div>
+            }
+
+            <form asp-action="CreateUser" asp-controller="Admin" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label fw-semibold">Tên đăng nhập <span class="text-danger">*</span></label>
+                    <input asp-for="UserName" class="form-control" placeholder="Ví dụ: nguyenvana" />
+                    <span asp-validation-for="UserName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label fw-semibold">Họ và tên <span class="text-danger">*</span></label>
+                    <input asp-for="FullName" class="form-control" placeholder="Ví dụ: Nguyễn Văn A" />
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="example@lms.local" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold">Mật khẩu <span class="text-danger">*</span></label>
+                    <input asp-for="Password" class="form-control" placeholder="Tối thiểu 6 ký tự" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Role" class="form-label fw-semibold">Vai trò <span class="text-danger">*</span></label>
+                    <select asp-for="Role" class="form-select">
+                        @foreach (var role in Model.AvailableRoles)
+                        {
+                            <option value="@role">@role</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4">💾 Tạo tài khoản</button>
+                    <a asp-action="Users" asp-controller="Admin" class="btn btn-outline-secondary px-4">← Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

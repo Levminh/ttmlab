@@ -1,0 +1,101 @@
+@* 
+    _LoginPartial.cshtml
+    Hiển thị trên navbar: 
+    - Nếu chưa đăng nhập: nút "Đăng nhập" và "Đăng ký"
+    - Nếu đã đăng nhập: tên user + dropdown menu (Profile, Đổi MK, Đăng xuất)
+*@
+@using Microsoft.AspNetCore.Identity
+@using LMS.Ovncr.Models
+@inject SignInManager<AspNetUser> SignInManager
+@inject UserManager<AspNetUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    /* Lấy thông tin user đang đăng nhập */
+    var currentUser = await UserManager.GetUserAsync(User);
+    var displayName = currentUser?.FullName ?? currentUser?.UserName ?? "Người dùng";
+    var isAdmin = User.IsInRole("Admin");
+
+    <div class="nav-item dropdown">
+        <!-- Nút dropdown hiển thị tên user -->
+        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#"
+           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="avatar-circle">@displayName.Substring(0, 1).ToUpper()</span>
+            <span class="d-none d-md-inline text-dark fw-semibold">@displayName</span>
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+            <!-- Thông tin user -->
+            <li class="dropdown-header">
+                <div class="fw-bold">@displayName</div>
+                <small class="text-muted">
+                    @if (isAdmin) { <span class="badge bg-danger">Admin</span> }
+                    else if (User.IsInRole("Teacher")) { <span class="badge bg-warning text-dark">Giảng viên</span> }
+                    else { <span class="badge bg-secondary">Học viên</span> }
+                </small>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+
+            <!-- Thông tin cá nhân -->
+            <li>
+                <a class="dropdown-item" asp-action="Profile" asp-controller="Account">
+                    👤 Thông tin cá nhân
+                </a>
+            </li>
+
+            <!-- Đổi mật khẩu -->
+            <li>
+                <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account">
+                    🔑 Đổi mật khẩu
+                </a>
+            </li>
+
+            <!-- Quản lý tài khoản (chỉ Admin mới thấy) -->
+            @if (isAdmin)
+            {
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                    <a class="dropdown-item text-danger" asp-action="Users" asp-controller="Admin">
+                        ⚙️ Quản lý tài khoản
+                    </a>
+                </li>
+            }
+
+            <li><hr class="dropdown-divider" /></li>
+
+            <!-- Nút đăng xuất (POST để bảo mật CSRF) -->
+            <li>
+                <form asp-action="Logout" asp-controller="Auth" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="dropdown-item text-danger">
+                        🚪 Đăng xuất
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    /* Chưa đăng nhập: hiển thị nút Login và Register */
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-action="Login" asp-controller="Auth">Đăng nhập</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link btn btn-primary text-white px-3 ms-2" 
+           asp-action="Register" asp-controller="Auth">Đăng ký</a>
+    </li>
+}
+
+<style>
+    /* Avatar tròn hiển thị chữ cái đầu của tên user */
+    .avatar-circle {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white; font-size: 0.85rem; font-weight: 700;
+        display: inline-flex; align-items: center; justify-content: center;
+    }
+    .dropdown-header { padding: 0.5rem 1rem; }
+    .dropdown-menu { min-width: 200px; }
+</style>
