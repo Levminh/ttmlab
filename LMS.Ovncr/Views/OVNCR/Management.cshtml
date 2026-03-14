@@ -1,31 +1,31 @@
-@model IEnumerable<LMS.Ovncr.Models.Scenario>
+@model IEnumerable<LMS.Ovncr.Models.TbKichBan>
+    
+
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>📑 Quản lý kịch bản diễn tập</h2>
-        <button class="btn btn-success">+ Thêm kịch bản mới</button>
+        <a asp-action="Create" class="btn btn-success">+ Thêm kịch bản mới</a>
     </div>
 
-    <table class="table table-hover border">
+    <table class="table table-hover border shadow-sm">
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
+                <th>Mã KB</th>
                 <th>Tên kịch bản</th>
-                <th>Loại</th>
-                <th>Độ khó</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
+                <th>Mục tiêu</th>
+                <th class="text-center">Thao tác</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model) {
             <tr>
-                <td>@item.Id</td>
-                <td><strong>@item.Name</strong></td>
-                <td><span class="badge bg-info">@item.Category</span></td>
-                <td>@item.Difficulty</td>
-                <td>@(item.IsActive ? "✅ Sẵn sàng" : "❌ Đang khóa")</td>
-                <td>
+                <td>@item.IdKichBan</td>
+                <td><span class="badge bg-secondary">@item.MaKichBan</span></td>
+                <td><strong>@item.TenKichBan</strong></td>
+                <td class="text-muted">@item.MucTieu</td>
+                <td class="text-center">
                     <button class="btn btn-sm btn-outline-primary">Sửa</button>
                     <button class="btn btn-sm btn-outline-danger">Xóa</button>
                 </td>

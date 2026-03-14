@@ -2,49 +2,62 @@ using Microsoft.AspNetCore.Mvc;
 using LMS.Ovncr.Models;
 using System.Collections.Generic;
 using System;
+
 // Đây là file Controller chính cho module OVNCR, quản lý các hành động liên quan đến Kịch bản diễn tập
 namespace LMS.Ovncr.Controllers
 {
     [Route("About")] 
     public class OVNCRController : Controller
     {
-        
+        // 1. Trang Thông tin chung (Truy cập qua: /About hoặc /About/Index)
         [HttpGet("")] 
         [HttpGet("Index")]
         public IActionResult Index()
-        { // Code lấy danh sách kịch bản từ database (giả sử đã có service)
+        { 
             return View();
         }
 
-        [HttpGet("Management")]
+        // 2. Trang Quản lý kịch bản: Chuyển sang đường dẫn độc lập /kichban
+        [HttpGet("/kichban")]
         public IActionResult Management()
         {
-            var scenarios = new List<Scenario>
-            { // Dữ liệu mẫu, thay bằng truy vấn từ database
-                new Scenario { Id = 1, Name = "Tấn công SQL Injection vào Cổng thông tin", Difficulty = "Easy", Category = "Web", IsActive = true },
-                new Scenario { Id = 2, Name = "Kịch bản Diễn tập Chính phủ số - Phục hồi hệ thống", Difficulty = "Hard", Category = "Network", IsActive = true },
-                new Scenario { Id = 3, Name = "Phát hiện mã độc trong mạng nội bộ", Difficulty = "Medium", Category = "Pwn", IsActive = true }
+            var scenarios = new List<TbKichBan>
+            {
+                new TbKichBan { 
+                    IdKichBan = 1, 
+                    MaKichBan = "WEB_01",
+                    TenKichBan = "Tấn công SQL Injection vào Cổng thông tin", 
+                    MucTieu = "Giúp học viên nắm vững kỹ năng khai thác và vá lỗi SQLi.",
+                    NoiDung = "Thực hành trên hệ thống web portal giả lập với các mức độ bảo mật khác nhau."
+                },
+                new TbKichBan { 
+                    IdKichBan = 2, 
+                    MaKichBan = "NET_02",
+                    TenKichBan = "Kịch bản Diễn tập Chính phủ số", 
+                    MucTieu = "Thực chiến quy trình ứng cứu sự cố mã độc tống tiền (Ransomware).",
+                    NoiDung = "Phục hồi hệ thống máy chủ ảo hóa nội bộ sau khi bị mã hóa dữ liệu."
+                }
             };
             return View(scenarios);
         }
 
-      
-        [HttpGet("Create")]
+        // 3. Trang Thêm kịch bản (Hiển thị Form): Đường dẫn /kichban/create
+        [HttpGet("/kichban/create")]
         public IActionResult Create()
         {
             return View();
         }
 
-   
-        [HttpPost("Create")]
-        public IActionResult Create(Scenario scenario)
+        // 4. Xử lý nhận dữ liệu từ Form gửi lên
+        [HttpPost("/kichban/create")]
+        public IActionResult Create(TbKichBan kichBan)
         {
             if (ModelState.IsValid)
             {
-                // Code lưu vào db
+                // Code lưu vào db sau này...
                 return RedirectToAction("Management");
             }
-            return View(scenario);
+            return View(kichBan);
         }
     }
 }
