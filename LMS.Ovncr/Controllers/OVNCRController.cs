@@ -5,7 +5,7 @@ using System;
 // Đây là file Controller chính cho module OVNCR, quản lý các hành động liên quan đến Kịch bản diễn tập
 namespace LMS.Ovncr.Controllers
 {
-    [Route("OVNCR")] 
+    [Route("About")] 
     public class OVNCRController : Controller
     {
         
