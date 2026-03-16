@@ -9,7 +9,7 @@ namespace LMS.Ovncr.Controllers
     [Route("About")] 
     public class OVNCRController : Controller
     {
-        // 1. Trang Thông tin chung (Truy cập qua: /About hoặc /About/Index)
+        // 1. Trang Thông tin chung 
         [HttpGet("")] 
         [HttpGet("Index")]
         public IActionResult Index()
@@ -42,6 +42,7 @@ namespace LMS.Ovncr.Controllers
         }
 
         // 3. Trang Thêm kịch bản (Hiển thị Form): Đường dẫn /kichban/create
+        
         [HttpGet("/kichban/create")]
         public IActionResult Create()
         {
